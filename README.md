@@ -19,3 +19,6 @@ in the previous terminal, run node index.js  <br>
 ### Client
 npm install  <br>
 node server.js  <br>
+
+
+Add your initials to the package.json file
