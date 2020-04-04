@@ -34,7 +34,7 @@ mongoose.connect(dbRoute, { useNewUrlParser: true, useUnifiedTopology: true}).ca
 });
 
 app.get('/', function (req, res) {
-    res.sendFile(path.join(__dirname, 'application/build', 'index.html'));
+    res.sendFile(path.join(__dirname, 'application/public', 'index.html'));
   });
 
 var hostname = 'localhost';
