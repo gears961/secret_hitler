@@ -1,14 +1,11 @@
 import React, { Component } from 'react';
-import './App.css';
+import '../style/App.css';
 
 class App extends Component {
   render() {
     return (
-
         <div>
-            SECRET HITLER !!!!!!!!!!!
-
-            Testing content
+           <h1> SECRET HITLER !!!!!!!!!!! Testing content</h1>
         </div>
     );
   }
