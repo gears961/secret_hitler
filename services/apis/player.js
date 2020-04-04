@@ -1,6 +1,6 @@
 var Player = require("../models/Player");
 
-modules.exports = function(app) {
+module.exports = function(app) {
     app.get('/getPlayersList', function(req, res) {
         Player.find({}, function(err, players) {
             if (err) {
