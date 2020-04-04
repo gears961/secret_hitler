@@ -1,11 +1,18 @@
 require('dotenv').config();
 
+// server
 const path = require('path');
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
-var Player = require('./models/Player');
+const request = require('request-promise');
+
+// bundler
+const webpackDevMiddleware = require('webpack-dev-middleware');
+const webpack = require('webpack');
+const webpackConfig = require('./webpack.config.js');
+const compiler = webpack(webpackConfig);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded( {extended: true} ));
@@ -14,13 +21,17 @@ mongoose.Promise = global.Promise;
 // The main instance of HTTP server
 var server = require('http').Server(app);
 
-app.use(express.static(path.join(__dirname, 'application/build')));
 
-// // server configuration
-// var config = {};
-// config.mongoURI = {
-//     development: "mongodb://localhost:27017/serverDB",
-// };
+app.use(express.static(path.join(__dirname, '/application/public')));
+app.use(webpackDevMiddleware(compiler, {
+    hot: true,
+    filename: 'bundle.js',
+    publicPath: '/',
+    stats: {
+        colors: true,
+    },
+    historyApiFallback: true,
+}));
 
 // Added for exposing our server instance to the test suite
 module.exports = server;
@@ -33,14 +44,11 @@ mongoose.connect(dbRoute, { useNewUrlParser: true, useUnifiedTopology: true}).ca
     console.log('Unable to connect to the mongodb instance. Error: ', reason);
 });
 
-app.get('/', function (req, res) {
-    res.sendFile(path.join(__dirname, 'application/public', 'index.html'));
-  });
-
 var hostname = 'localhost';
 var port = 8080;
 
 // APIs go here
+const player = require('./apis/player.js')(app);
 
 // Start listening for requests
 server.listen(process.env.PORT || port, function () {
