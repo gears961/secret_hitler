@@ -1,6 +1,7 @@
-var uniqid = require('uniqid');
-var Player = require("../models/Player");
+require('dotenv').config()
 
+var Player = require("../models/Player");
+var uniqid = require('uniqid');
 const bcrypt = require('bcryptjs');
 const Cryptr = require('cryptr');
 const cryptr = new Cryptr(process.env.SECRET);

@@ -6,6 +6,7 @@ var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
+const cookieParser = require('cookie-parser');
 
 // bundler
 const webpackDevMiddleware = require('webpack-dev-middleware');
@@ -13,6 +14,7 @@ const webpack = require('webpack');
 const webpackConfig = require('./webpack.config.js');
 const compiler = webpack(webpackConfig);
 
+app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded( {extended: true} ));
 mongoose.Promise = global.Promise;
@@ -48,6 +50,21 @@ var port = 8080;
 
 // APIs go here
 const player = require('./apis/player.js')(app);
+const user = require('./apis/users.js')(app);
+const withAuth = require('./apis/middleware');
+
+// Common Routes
+
+/**
+ * ROUTE TEMPLATE
+ * 
+ * app.<route>('/<endpoint>', withAuth, (req, res) => {
+ *      res.status(<status code>).json({ msg:<data> });
+ * });
+ * 
+ */
+
+// helpers
 
 // Start listening for requests
 server.listen(process.env.PORT || port, function () {
