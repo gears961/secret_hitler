@@ -13,12 +13,13 @@ const Schema = mongoose.Schema;
  */
 var playerSchema = new Schema({
     playerId: {
-        type: Number,
+        type: String,
         required: true,
         unique: true
     },
     playerName: {
         type: String,
+        unique: true,
         required: true
     },
     password: {
@@ -58,7 +59,5 @@ var playerSchema = new Schema({
     }
 },
 { timestamps: true });
-
-playerSchema.index({ playerId: 1 }, {unique: true});
 
 module.exports = mongoose.model('Player', playerSchema);
