@@ -11,7 +11,7 @@ const Schema = mongoose.Schema;
 /**
  * User Schema
  */
-var _schema = new Schema({
+var userSchema = new Schema({
     playerTag: {
         type: String,
         required: true
