@@ -8,7 +8,7 @@ const cryptr = new Cryptr(process.env.SECRET);
 const salt = bcrypt.genSaltSync(15);
 
 module.exports = function(app) {
-    app.get('/api/getPlayersList', function(req, res) {
+    app.get('/api/getPlayerList', function(req, res) {
         Player.find({}, function(err, players) {
             if (err) {
                 res.status(400)
@@ -77,7 +77,7 @@ module.exports = function(app) {
     });
 
     app.delete('/api/deletePlayer', function(req, res) {
-        Player.findOneAndDelete({playerId: req.body.id}, function(err, player) {
+        Player.findOneAndDelete({playerId : req.body.playerId}, function(err, player) {
             if (err) {
                 res.status(400)
                 .json({
@@ -95,5 +95,4 @@ module.exports = function(app) {
             }
         });
     });
-
 };
