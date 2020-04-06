@@ -30,7 +30,7 @@ module.exports = function(app) {
 
     app.post('/api/createPlayer', function(req, res) {
         var newPlayer = new Player({
-            playerId: uniqid(),
+            userId: req.body.userId,
             playerName: req.body.playerName,
             password: bcrypt.hashSync(req.body.password, salt)
         });
@@ -55,9 +55,9 @@ module.exports = function(app) {
     });
 
     app.post('/api/updatePlayer', function(req, res) {
-        var filter = {playerId: req.body.id};
+        var filter = {_id: req.body.id};
         var updateValues = req.body.values;
-        Player.findOneAndUpdate(filter, updateValues, function(err, player) {
+        Player.findOneAndUpdate(filter, JSON.parse(updateValues),  function(err, player) {
             if (err) {
                 res.status(400)
                 .json({
@@ -70,7 +70,7 @@ module.exports = function(app) {
                 .json({
                     status: 'success',
                     data: player,
-                    message: "Successfully updated " + player.playerName
+                    message: "Successfully updated "
                 });
             }
         });
