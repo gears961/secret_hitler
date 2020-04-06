@@ -28,7 +28,7 @@ var gameSchema = new Schema({
     electionFailureCount: {
         type: Number,
         min: 0,
-        max: 3,
+        max: 3
     },
     president: Player,
     chancellor: Player,

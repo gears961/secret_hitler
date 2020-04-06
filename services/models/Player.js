@@ -1,6 +1,6 @@
 require('dotenv').config()
 var mongoose = require('mongoose');
-
+var User = require('./User.js')
 let db = mongoose.connection;
 db.once('open', () => console.log('connected to the database'));
 // checks if connection with the database is successful
@@ -12,13 +12,15 @@ const Schema = mongoose.Schema;
  * Player Schema
  */
 var playerSchema = new Schema({
-    playerId: {
-        type: Number,
+    userId: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
         required: true,
         unique: true
     },
     playerName: {
         type: String,
+        unique: true,
         required: true
     },
     password: {
@@ -58,7 +60,5 @@ var playerSchema = new Schema({
     }
 },
 { timestamps: true });
-
-playerSchema.index({ playerId: 1 }, {unique: true});
 
 module.exports = mongoose.model('Player', playerSchema);
