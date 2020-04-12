@@ -1,4 +1,11 @@
 const path = require('path');
+const HtmlWebPackPlugin = require("html-webpack-plugin");
+
+const htmlWebpackPlugin = new HtmlWebPackPlugin({
+    template: "../public/index.html",
+    filename: "./index.html",
+    favicon: '../public/favicon.ico'
+});
 
 module.exports = {
     context: path.join(__dirname, '/application/src'),
@@ -18,9 +25,21 @@ module.exports = {
                     'babel-loader',
                 ],
             },
-            { 
-                test: /\.css$/, 
-                loader: "style-loader!css-loader" 
+            {
+                test: /\.css$/,
+                use: [
+                    {
+                        loader: "style-loader"
+                    },
+                    {
+                        loader: "css-loader"
+                    }
+                ]
+            },
+            {
+                test: /\.(png|svg|jpg|jpeg|gif|ico)$/,
+                exclude: /node_modules/,
+                use: ['file-loader?name=[name].[ext]'] // ?name=[name].[ext] is only necessary to preserve the original file name
             }
         ],
     },
@@ -28,5 +47,10 @@ module.exports = {
         modules: [
             path.join(__dirname, 'node_modules'),
         ],
+        alias: {
+            Components: path.resolve(__dirname, 'application/src/components/'),
+            Pages: path.resolve(__dirname, 'application/src/pages/'),
+        }
     },
+   plugins: [htmlWebpackPlugin]
 }; 
