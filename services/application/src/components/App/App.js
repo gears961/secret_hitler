@@ -4,7 +4,7 @@ import './App.css';
 import { Link, Route, Switch, BrowserRouter } from 'react-router-dom';
 import { Box, Heading, Grommet } from 'grommet';
 
-import {Home, Login, Logout, Register} from 'Pages';
+import {Home, Login, Logout, Register, Loading} from 'Pages';
 
 class App extends Component {
     constructor(props) {
@@ -38,6 +38,7 @@ class App extends Component {
     }
 
     componentDidMount() {
+        console.log("component did mount");
         fetch('/api/checkToken', {
             headers: {
                 'Accept': 'application/json, text/plain, */*',  // It can be used to overcome cors errors
@@ -45,6 +46,7 @@ class App extends Component {
             }
         })
         .then(res => {
+            console.log(res.status);
             if (res.status === 200) {
                 this.setState({
                     msg: "USER LOGGED IN!",
@@ -79,46 +81,38 @@ class App extends Component {
 
 
     render() {
-        var loginButton = this.state.isLoggedIn ? (<div className='nav-item'><Link to="/logout">Logout</Link></div>) : (
-            <div>
-                <div className='nav-item'><Link to="/login">Login</Link></div>
-                <div className='nav-item'><Link to="/register">Register</Link></div></div>
-            );
-        
+        var propsData = {
+            login: this.login,
+            logout:this.logout,
+            setPlayerTag: this.setPlayerTag,
+            setAdmin:this.setAdmin,
+            playerTag:this.state.playerTag,
+            isLoggedIn:this.state.isLoggedIn
+        };
+
+        var content = this.state.loading ? <Loading /> :
+            <Home data={propsData}/>
+        console.log("herer 1", content, this.state.loading );
         return (
-            <BrowserRouter>
-                <div className='container'>
-                    <div className='nav'>
-                        <div className='logo'>SecretHitler</div>
-                        <div className='nav-cont'>
-                            {this.state.isAdmin ?
-                                <div className='admin-tag'>A</div>
-                            :
-                                <span></span>
-                            }
-                            <div className='playerTag'>{this.state.playerTag}</div>
-                            <div className='nav-item'><Link to="/">Home</Link></div>
-                            {loginButton}
-                        </div>
-                    </div>
-                    <div className='content'>
-                        <Switch>
-                            <Route exact path="/" component={() => 
-                                <Home login={this.login} logout={this.logout} setPlayerTag={this.setPlayerTag} setAdmin={this.setAdmin}/>
-                            }/>
-                            <Route exact path="/login" component={() =>
-                                <Login login={this.login} logout={this.logout}  setPlayerTag={this.setPlayerTag} setAdmin={this.setAdmin}/>
-                            }/>
-                            <Route exact path="/logout" component={() =>
-                                <Logout login={this.login} logout={this.logout}  setPlayerTag={this.setPlayerTag} setAdmin={this.setAdmin}/>
-                            }/>
-                            <Route exact path="/register" component={() =>
-                                <Registration login={this.login} logout={this.logout} setPlayerTag={this.setPlayerTag} setAdmin={this.setAdmin}/>
-                            }/>
-                            
-                        </Switch>
-                    </div>
-                </div>
+            
+            
+          <BrowserRouter>
+                <div>NAVIGATION</div>
+                <Switch>
+                    <Route exact path="/" component={() => 
+                        content
+                    }/>
+                    <Route exact path="/login" component={() =>
+                        <Login data={propsData}/>
+                    }/>
+                    <Route exact path="/logout" component={() =>
+                        <Logout data={propsData}/>
+                    }/>
+                    <Route exact path="/register" component={() =>
+                        <Registration data={propsData}/>
+                    }/>
+                    
+                </Switch>
             </BrowserRouter>
         );
     }

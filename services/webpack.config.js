@@ -15,6 +15,7 @@ module.exports = {
     output: {
         path: path.join(__dirname, '/application/public'),
         filename: 'bundle.js',
+        publicPath: '/'
     },
     module: {
         rules: [
@@ -52,5 +53,12 @@ module.exports = {
             Pages: path.resolve(__dirname, 'application/src/pages/'),
         }
     },
-   plugins: [htmlWebpackPlugin]
+    
+    devServer: {
+        historyApiFallback: true,
+        proxy: {
+            '/': 'http://localhost:8080'
+        }
+    },
+    plugins: [htmlWebpackPlugin]
 }; 
