@@ -6,6 +6,7 @@ const bcrypt = require('bcryptjs');
 const Cryptr = require('cryptr');
 const cryptr = new Cryptr(process.env.SECRET);
 const jwt = require('jsonwebtoken');
+const nodemailer = require("nodemailer");
 
 
 function encode(email) {
@@ -62,6 +63,48 @@ function getAll(callback) {
     Users.find({}, callback);
 }
 
+function verifyEmail(email, callback) {
+    Users.updateOne({ email: email }, { $set: { verified: true } }, callback);
+}
+
+function generateVerificationToken(email) {
+    var date = new Date();
+    var toEncode = "verification/"+email+"/"+date;
+    return Buffer(toEncode, 'ascii').toString('base64');
+}
+
+function verificationTokenValid(email, token) {
+    var data = Buffer(token, 'base64').toString('ascii').split("/");
+    if (data.length != 3) {
+        return false;
+    }
+    else {
+        return (email === data[1] && Math.ceil((new Date() - new Date(data[2])) / (1000*60*60)) <= 72);
+    }
+}
+
+function sendEmail(email, token, req) {
+    var transporter = nodemailer.createTransport({ 
+        service: 'gmail', 
+        auth: { 
+            user: process.env.MAIL_USER, 
+            pass: process.env.MAIL_PASS 
+        } 
+    });
+
+    var mailOptions = { 
+        from: 'no-reply@shgang.com', 
+        to: email, 
+        subject: 'Account Verification Token', 
+        text: 'Hello,\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + req.headers.host + '\/verify\/?token=' + token + '\n\nBest,\nSecret Hitler Gang\n' 
+    };
+
+    transporter.sendMail(mailOptions, function (err) {
+        if (err) { return res.status(500).send({ msg: err.message }); }
+        res.status(200).send('A verification email has been sent to ' + email + '.');
+    });
+}
+
 function createUser(data, callback) {
     var salt = bcrypt.genSaltSync(15);
     var pass = bcrypt.hashSync(data.password, salt);
@@ -111,8 +154,41 @@ module.exports = function(app) {
         
         findByEmail(email, function(err, data) {
             return res.status(200).json({
-                playerTag: data.playerTag
+                playerTag: data.playerTag,
+                verified: data.verified
             });
         });
     });
+
+    app.post('/api/sendVerification', (req, res) => {
+        var token = req.headers.cookie.split("=")[1];
+        var decoded = jwt.verify(token, process.env.SECRET);
+        var email = decode(decoded.emailhash);
+
+        sendEmail(email, generateVerificationToken(email), req);
+
+        return res.status(200).json({ msg: 'success' });
+    });
+
+    app.post('/api/verifyEmail/:token', (req, res) => {
+        var token = req.headers.cookie.split("=")[1];
+        var decoded = jwt.verify(token, process.env.SECRET);
+        var email = decode(decoded.emailhash);
+
+        if (verificationTokenValid(email, req.params.token)) {
+            verifyEmail(email, (err, data) => {
+                if (err) {
+                    return res.status(401).json({ error: 1, msg: "Could not verify email!" });
+                }
+                else {
+                    return res.status(200).json({ msg: "success" }); 
+                }
+            });
+        }
+        else {
+
+            return res.status(401).json({ error: 1, msg: "Token expired or Invalid token!" });
+        }
+    });
+
 };
