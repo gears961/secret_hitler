@@ -30,7 +30,7 @@ import { AiFillCrown, AiFillEye } from "react-icons/ai";
 import { GiDeathSkull } from "react-icons/gi";
 
 
-import {Banner, BannerAlt} from 'Media';
+import {Banner, BannerAlt, LicensePic} from 'Media';
 
 class Rules extends Component {
     
@@ -291,7 +291,68 @@ class Rules extends Component {
                     >
                         VETO POWER
                     </Text>
+                    <Paragraph fill size="medium" color={offWhite}>
+                        The Veto Power is a special rule that comes into effect after five Fascist Policies have been enacted. For all Legislative Sessions after the fifth Fascist Policy is enacted, the Executive branch gains a permanent new ability to discard all three Policy tiles if <Text color={back}>both</Text> the Chancellor and President agree.
+                    </Paragraph>
+                    <Paragraph fill size="medium" color={offWhite}>
+                        The President draws three Policy tiles, discards one, and passes the remaining two to the Chancellor as usual. Then Chancellor may, instead of enacting either Policy, say “I wish to veto this agenda.” If the President consents by saying, “I agree to the veto,” both Policies are discarded and the Presidential candidate moves on as usual. If the President  does not consent, the Chancellor must enact a Policy as normal.
+                    </Paragraph>
+                    <Paragraph fill size="medium" color={offWhite}>
+                        Each use of the Veto Power represents an inactive government and advances the Election Tracker by one.
+                    </Paragraph>
 
+                    <Text 
+                        size="30px" 
+                        color={offWhite} 
+                        style={{"paddingBottom":"2px", "borderBottom": "2px solid " + offWhite}}
+                    >
+                        CREDITS &amp; LICENSE
+                    </Text>
+                    <Paragraph fill size="medium" color={offWhite}>
+                        Secret Hitler was created by Mike Boxleiter, Tommy Maranges, Max Temkin, and Mac Schubert.
+                    </Paragraph>
+                    <Paragraph fill size="medium" color={offWhite}>
+                        This redistribution of the game was created by Janarthanan Manoharan, Kathryn Kodama, Kalindu De Costa, Mahima Bhayana, and Mohammed Faizan.
+                    </Paragraph>
+                    <Paragraph fill size="medium" color={offWhite}>
+                        Secret Hitler is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. <br />
+                        <Image src={LicensePic} />
+                    </Paragraph>
+                    <Text 
+                        size="large" 
+                        color={offWhite} 
+                        style={{"textDecoration":"underline"}}
+                    >
+                        YOU ARE FREE TO:
+                    </Text>
+                    <Paragraph fill size="medium" color={offWhite}>
+                        <Text color={back}>Share</Text> — copy and redistribute the game in any medium or format
+                    </Paragraph>
+                    <Paragraph fill size="medium" color={offWhite}>
+                        <Text color={back}>Adapt</Text> — remix, transform, and build upon the game
+                    </Paragraph>
+                    <Text 
+                        size="large" 
+                        color={offWhite} 
+                        style={{"textDecoration":"underline"}}
+                    >
+                        UNDER THE FOLLOWING TERMS:
+                    </Text>
+                    <Paragraph fill size="medium" color={offWhite}>
+                        <Text color={back}>Attribution</Text> — If you make something using our game, you need to give us credit and link back to us, and you need to explain what you changed.
+                    </Paragraph>
+                    <Paragraph fill size="medium" color={offWhite}>
+                        <Text color={back}>Non-Commercial</Text> — You can’t use our game to make money.
+                    </Paragraph>
+                    <Paragraph fill size="medium" color={offWhite}>
+                        <Text color={back}>Share Alike</Text> — If you remix, transform, or build upon our game, you have to release your work under the same Creative Commons license that we use (BY-NC-SA 4.0).
+                    </Paragraph>
+                    <Paragraph fill size="medium" color={offWhite}>
+                        <Text color={back}>No additional restrictions</Text> — You can’t apply legal terms or technological measures to your work that legally restrict others from doing anything our license allows. That means you can’t submit anything using our game to any app store without our approval.
+                    </Paragraph>
+                    <Paragraph fill size="medium" color={offWhite}>
+                        You can learn more about Creative Commons at CreativeCommons.org. (Our license is available at CreativeCommons.org/licenses/by-nc-sa/4.0/legalcode).
+                    </Paragraph>
 
                     
                     
