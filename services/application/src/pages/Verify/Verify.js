@@ -94,7 +94,7 @@ class Verify extends Component {
                     <Box 
                         direction="column"
                         pad="none"
-                        width="70%"
+                        width="60%"
                         min-height="70%"
                         background={offWhite}
                         overflow="auto"

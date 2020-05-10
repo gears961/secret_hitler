@@ -41,7 +41,8 @@ function killSession(req, res) {
 function login(err, data, password, req, res) {
     if (!err && data) {
         var user = {
-            playerTag: data.playerTag 
+            playerTag: data.playerTag,
+            verified: data.verified
         };
         if (verifyPass(data, password)) return createSession(data.email, req, res, user);
         else res.status(401).json({ error: 0, msg: "Incorrect Password" });
@@ -74,6 +75,8 @@ function generateVerificationToken(email) {
 }
 
 function verificationTokenValid(email, token) {
+    if (!token) return false;
+
     var data = Buffer(token, 'base64').toString('ascii').split("/");
     if (data.length != 3) {
         return false;
@@ -171,12 +174,13 @@ module.exports = function(app) {
     });
 
     app.post('/api/verifyEmail/:token', (req, res) => {
-        var token = req.headers.cookie.split("=")[1];
-        var decoded = jwt.verify(token, process.env.SECRET);
-        var email = decode(decoded.emailhash);
 
-        if (verificationTokenValid(email, req.params.token)) {
-            verifyEmail(email, (err, data) => {
+        if (!req.params.token) return res.status(401).json({ error: 1, msg: "Token expired or Invalid token!" });
+
+        var data = Buffer(req.params.token, 'base64').toString('ascii').split("/");
+
+        if (verificationTokenValid(data[1], req.params.token)) {
+            verifyEmail(data[1], (err, data) => {
                 if (err) {
                     return res.status(401).json({ error: 1, msg: "Could not verify email!" });
                 }
