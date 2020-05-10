@@ -9,16 +9,11 @@ import "./Home.css";
 
 import {Dashboard} from 'Pages';
 
-
 class Home extends Component {
 
     constructor(props) {
         super(props)
         this.state = {
-            isLoggedIn: false,
-            email:'',
-            firstname:'',
-            lastname:''
         };
     }
 

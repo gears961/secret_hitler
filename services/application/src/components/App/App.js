@@ -29,6 +29,7 @@ class App extends Component {
 
     logout() {
         this.setState({isLoggedIn: false, playerTag:""});
+
     }
 
     setPlayerTag(tag) {
@@ -41,6 +42,7 @@ class App extends Component {
 
     componentDidMount() {
         this._isMounted = true;
+
 
         fetch('/api/checkToken', {
             headers: {
@@ -109,6 +111,7 @@ class App extends Component {
                     }/>
                     <Route exact path="/register" component={() =>
                         <Register data={propsData}/>
+
                     }/>
                     
                 </Switch>
