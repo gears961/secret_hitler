@@ -4,10 +4,30 @@ import { Link, Route, Switch, BrowserRouter } from 'react-router-dom';
 
 import "./Dashboard.css";
 
-import { grommet, Grommet, Anchor, Box, Button, Nav, Sidebar, Avatar, Image} from 'grommet';
+import { 
+    grommet, 
+    Grommet, 
+    Text, 
+    Box, 
+    Button, 
+    Avatar, 
+    Image, 
+    ResponsiveContext, 
+    Anchor, 
+    Paragraph,
+    Heading, 
+    Table,
+    TableBody,
+    TableRow,
+    TableCell,
+    TableHeader 
+} from 'grommet';
+
 import { Login, Menu, Logout, Add, Close, Analytics, Chat, Clock, Configure, Help, Projects, StatusInfoSmall } from "grommet-icons";
 
-import {Banner} from 'Media';
+import {Banner, BannerAlt} from 'Media';
+
+import {Rules} from 'Components';
 
 class Dashboard extends Component {
     
@@ -44,13 +64,31 @@ class Dashboard extends Component {
     render() {
 
         const grey = "#474442";
+        const grey2 = "#a89e9b";
         const yellow = "#fbb867";
         const brightYellow = "#fdde4e";
         const orange = "#f2664a";
         const back = "	#fbb867";
+        const offWhite = "#fde0bc";
+        const blue = "#6d97b9";
+
+        const Liberals = <Text color={blue}>Liberals</Text>;
+        const Liberal = <Text color={blue}>Liberal</Text>;
+        const Fascists = <Text color={orange}>Fascists</Text>;
+        const Fascist = <Text color={orange}>Fascist</Text>;
+        const Hitler = <Text color={orange}>Hitler</Text>;
+
+        const rs =
+            <Rules />
+        ;
+        const ls =
+            <Box fill background={grey} round="xsmall" overflow="auto">
+
+            </Box>
+        ;
 
         return (
-            <Grommet theme={grommet} full>
+            <Grommet theme={grommet} full background={back}>
                 <Box
                     direction="column"
                     pad="none"
@@ -64,8 +102,43 @@ class Dashboard extends Component {
                         // ADD the logged in dash
                         // join game
                         // create game
+                        <ResponsiveContext.Consumer>
+                            {responsive =>
+                                responsive === "small" ? (
+                                    <Box
+                                        margin="small" 
+                                        width="98%" 
+                                        height={{"min":"96.5%"}} 
+                                        direction="column" 
+                                        gap="small"
+                                    >
+                                        <Box width="100%" height={{"min":"80%"}}>
+                                            {ls}
+                                        </Box>
+                                        <Box width="100%"  height={{"min":"80%"}}>
+                                            {rs}
+                                        </Box>
+                                    </Box>
+                                ) : (
+                                    <Box 
+                                        margin="small" 
+                                        width="98%" 
+                                        height="96.5%" 
+                                        direction="row" 
+                                        align="center"
+                                        justify="between"
+                                    >
+                                        <Box width="65%" height="100%">
+                                            {rs}
+                                        </Box>
+                                        <Box width="34%" height="100%">
+                                            {ls}
+                                        </Box>
+                                    </Box>
+                                )
+                            }
+                        </ResponsiveContext.Consumer>
                         
-                        <div>show dash</div>
                     :
                         <Box width="80%" height="auto">
                             <Image src={Banner} fit="contain"/>

@@ -4,7 +4,7 @@ import { Link, Route, Switch, BrowserRouter } from 'react-router-dom';
 
 import { grommet, Grommet, Anchor, Box, Button, Header, Nav, Image, Avatar, Text } from 'grommet';
 
-import { Login, Notes, Logout, Organization, User, StatusCritical, Refresh, CheckboxSelected } from "grommet-icons";
+import { Login, Notes, Logout, Organization, User, StatusCritical, Refresh, CheckboxSelected, Gamepad } from "grommet-icons";
 import "./Home.css";
 
 import {Dashboard} from 'Components';
@@ -138,6 +138,13 @@ class Home extends Component {
                                     <Anchor label="Home" key="Home" color={anchorColour} margin="xsmall"/>
                                 </Box>
                             </Link>
+                            {!this.state.isLoggedIn && 
+                                <Box direction="row" align="center">
+                                    <Gamepad color={anchorColourAlt} size='20px' />
+                                    <Anchor label="Play as Guest" key="pg" color={anchorColour}  margin="xsmall"/>
+                                </Box>
+                            }
+
                             {!this.state.isLoggedIn && 
                                 <Link to="/register" style={{ textDecoration: 'none' }}>
                                     <Box direction="row" align="center">
