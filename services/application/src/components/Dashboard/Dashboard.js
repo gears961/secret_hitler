@@ -4,8 +4,10 @@ import { Link, Route, Switch, BrowserRouter } from 'react-router-dom';
 
 import "./Dashboard.css";
 
-import { grommet, Grommet, Anchor, Box, Button, Nav, Sidebar, Avatar} from 'grommet';
+import { grommet, Grommet, Anchor, Box, Button, Nav, Sidebar, Avatar, Image} from 'grommet';
 import { Login, Menu, Logout, Add, Close, Analytics, Chat, Clock, Configure, Help, Projects, StatusInfoSmall } from "grommet-icons";
+
+import {Banner} from 'Media';
 
 class Dashboard extends Component {
     
@@ -35,47 +37,41 @@ class Dashboard extends Component {
     }
 
     componentDidMount() {
-        
-        
+        this.setState(this.props.data);
     }
     
 
     render() {
 
+        const grey = "#474442";
+        const yellow = "#fbb867";
+        const brightYellow = "#fdde4e";
+        const orange = "#f2664a";
+        const back = "	#fbb867";
+
         return (
-            <Grommet theme={grommet}>
+            <Grommet theme={grommet} full>
                 <Box
                     direction="column"
                     pad="none"
-                    width="100vw"
-                    height="100vh"
-                    round="xxsmall"
+                    background={back}
+                    fill
+                    align="center"
+                    justify="center"
                 >
-                    <Box pad="none" direction="row"  width="100%" height="100%"> 
-                        {this.state.open && (
-                            <Layer
-                            onEsc={() => this.setOpen(false)}
-                            onClickOutside={() => this.setOpen(false)}
-                            >
-                                <Box width="150px" height="100%" background={{color:"accent-1"}}>
-                                    hello
-                                </Box>
-                            </Layer>
-                            
-                        )}
-                        <Box align="center" direction="row" width="50px" height="50px">
-                            
-                            <Button
-                                icon={<Menu />}
-                                align="center"
-                                onClick={() => {this.setOpen(!this.state.open)}}
-                                fill
-                                color="#00de90"
-                            />
-                            
-                        </Box>
+                 
+                    {this.state.isLoggedIn ?
+                        // ADD the logged in dash
+                        // join game
+                        // create game
                         
-                    </Box>
+                        <div>show dash</div>
+                    :
+                        <Box width="80%" height="auto">
+                            <Image src={Banner} fit="contain"/>
+                        </Box>
+                    }
+
                 </Box>
             </Grommet>
         );

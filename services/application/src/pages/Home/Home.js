@@ -7,7 +7,7 @@ import { grommet, Grommet, Anchor, Box, Button, Header, Nav, Image, Avatar, Text
 import { Login, Notes, Logout, Organization, User, StatusCritical, Refresh, CheckboxSelected } from "grommet-icons";
 import "./Home.css";
 
-import {Dashboard} from 'Pages';
+import {Dashboard} from 'Components';
 
 class Home extends Component {
 
@@ -79,6 +79,8 @@ class Home extends Component {
                     width="100vw"
                     height="100vh"
                     round="small"
+                    direction="column"
+                    gap="small"
                 >
 
                     <Box width="100%" direction="row" align="center" justify="between" background={grey} pad="small">
@@ -163,6 +165,10 @@ class Home extends Component {
                                 </Link>
                             }
                         </Nav>
+                    </Box>
+
+                    <Box fill background='none'>
+                        <Dashboard data={this.props.data}/>
                     </Box>
                 </Box>
             
