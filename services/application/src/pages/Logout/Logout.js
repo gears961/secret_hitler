@@ -3,6 +3,7 @@ import { withRouter } from 'react-router-dom';
 import "./Logout.css";
 
 class Logout extends Component {
+    _isMounted = false;
 
     constructor(props) {
         super(props)
@@ -24,7 +25,13 @@ class Logout extends Component {
         event.preventDefault();
     }
 
+    componentWillUnmount() {
+        this._isMounted = false;
+    }
+
     componentDidMount() {
+        this._isMounted = true;
+
         document.cookie = "token=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;"
         fetch('/api/signout', {
             method: 'POST',
@@ -35,15 +42,9 @@ class Logout extends Component {
             }
         })
         .then(res => {
-            if (res.status === 200) {
-                this.setState({
-                    isLoggedIn:false
-                });
-                this.props.logout();
-            } else {
-                this.setState({
-                    isLoggedIn:true
-                });
+            if (res.status === 200 && this._isMounted) {
+
+                this.props.data.logout();
             }
             this.props.history.push('/');
         })

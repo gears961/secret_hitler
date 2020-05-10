@@ -40,8 +40,7 @@ function killSession(req, res) {
 function login(err, data, password, req, res) {
     if (!err && data) {
         var user = {
-            playerTag: data.playerTag ,
-            isAdmin: data.admin
+            playerTag: data.playerTag 
         };
         if (verifyPass(data, password)) return createSession(data.email, req, res, user);
         else res.status(401).json({ error: 0, msg: "Incorrect Password" });
@@ -69,8 +68,7 @@ function createUser(data, callback) {
     var user = {
         email: data.email,
         playerTag: data.playerTag,
-        password: pass,
-        admin:false
+        password: pass
     };
     Users.create(user, callback);
 }
@@ -85,11 +83,11 @@ module.exports = function(app) {
                 // email doesn't exist we are good
                 createUser(formData, (err, data) => {
                     if (err) return res.status(400).json({error: err, msg:"Failed to create user."});
-                    else return createSession(formData.email, req, res, {playerTag: formData.playerTag, isAdmin: data.admin});
+                    else return createSession(formData.email, req, res, {playerTag: formData.playerTag});
                 });
             } 
             else {
-                return res.status(401).json({ error: 0, msg: "Email exists" });
+                return res.status(401).json({ error: 1, msg: "Email exists" });
             }
         });
     });
@@ -111,13 +109,9 @@ module.exports = function(app) {
         var decoded = jwt.verify(token, process.env.SECRET);
         var email = decode(decoded.emailhash);
         
-        Users.findByEmail(email, function(err, data) {
-            res.status(200).json({
-                firstname: data.firstname,
-                lastname: data.lastname,
-                email: data.email,
-                isAdmin: data.admin,
-                id: data._id
+        findByEmail(email, function(err, data) {
+            return res.status(200).json({
+                playerTag: data.playerTag
             });
         });
     });
