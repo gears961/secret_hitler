@@ -4,7 +4,7 @@ import './App.css';
 import { Link, Route, Switch, BrowserRouter } from 'react-router-dom';
 import { Box, Heading, Grommet } from 'grommet';
 
-import {Home, Login, Logout, Register, Loading} from 'Pages';
+import {Home, Login, Logout, Register, Loading, Verify} from 'Pages';
 
 class App extends Component {
     _isMounted = false;
@@ -15,7 +15,8 @@ class App extends Component {
             mag:'',
             loading:true,
             isLoggedIn:false,
-            playerTag:''
+            playerTag:'',
+            verified:false
         };
 
         this.logout = this.logout.bind(this);
@@ -24,7 +25,7 @@ class App extends Component {
     }
 
     login(data) {
-        this.setState({isLoggedIn: true, playerTag:data.playerTag});
+        this.setState({isLoggedIn: true, playerTag:data.playerTag, verified:data.verified});
     }
 
     logout() {
@@ -72,7 +73,8 @@ class App extends Component {
                         playerTag: data.playerTag,
                         msg: "USER LOGGED IN!",
                         isLoggedIn:true,
-                        loading:false
+                        loading:false,
+                        verified: data.verified
                     });
                 }
             }
@@ -92,6 +94,7 @@ class App extends Component {
             logout:this.logout,
             setPlayerTag: this.setPlayerTag,
             playerTag:this.state.playerTag,
+            verified:this.state.verified,
             isLoggedIn:this.state.isLoggedIn
         };
 
@@ -111,6 +114,10 @@ class App extends Component {
                     }/>
                     <Route exact path="/register" component={() =>
                         <Register data={propsData}/>
+
+                    }/>
+                    <Route exact path="/verify" component={() =>
+                        <Verify data={propsData}/>
 
                     }/>
                     

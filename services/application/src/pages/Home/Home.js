@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { Link, Route, Switch, BrowserRouter } from 'react-router-dom';
 
-import { grommet, Grommet, Anchor, Box, Button, Header, Nav, Image, Avatar } from 'grommet';
+import { grommet, Grommet, Anchor, Box, Button, Header, Nav, Image, Avatar, Text } from 'grommet';
 
-import { Login, Notes, Logout, Organization, User } from "grommet-icons";
+import { Login, Notes, Logout, Organization, User, StatusCritical, Refresh, CheckboxSelected } from "grommet-icons";
 import "./Home.css";
 
 import {Dashboard} from 'Pages';
@@ -14,6 +14,7 @@ class Home extends Component {
     constructor(props) {
         super(props)
         this.state = {
+            resent: false
         };
     }
 
@@ -32,6 +33,26 @@ class Home extends Component {
         this.setState(this.props.data);
     }
 
+    resendEmail() {
+        
+        fetch('/api/sendVerification', {
+            method: 'POST',
+            body: JSON.stringify({}),
+            headers: {
+                'Accept': 'application/json, text/plain, */*',  // It can be used to overcome cors errors
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(res => {
+            if (res.status === 200) {
+                this.setState({resent: true});
+            }
+        })
+        .catch(err => {
+            console.error(err);
+        });
+    }
+
     render() {
 
         const customTheme = {
@@ -45,7 +66,9 @@ class Home extends Component {
         const anchorColour = "#f2664a";
         const anchorColourAlt = "#fde0bc";
         const grey = "#474442";
-        const yellow = "#fbb867"
+        const yellow = "#fbb867";
+        const brightYellow = "#fdde4e";
+        const orange = "#f2664a";
 
         return (
             <Grommet theme={customTheme}>
@@ -57,42 +80,6 @@ class Home extends Component {
                     height="100vh"
                     round="small"
                 >
-                    {/* <Box pad="small" width="100%" height="40%" />
-                    <Box 
-                        direction="column" 
-                        justify="evenly" 
-                        align="center"
-                        pad="large"  
-                        width="100%" 
-                        height="40%"
-                        gap="large"
-                    > 
-                        <Box pad="small" width="85%" height="25%"> 
-                            <Link to="/register" style={{width: '100%', height: '100%'}}>
-                                <Button
-                                    primary
-                                    icon={<Notes />}
-                                    label="Register"
-                                    onClick={()=>{}}
-                                    fill
-                                    color="accent-1"
-                                />
-                            </Link>
-                        </Box>
-
-                        <Box pad="small" width="85%" height="25%"> 
-                            <Link to="/login" style={{width: '100%', height: '100%'}}>
-                                <Button
-                                    primary
-                                    icon={<Notes />}
-                                    label="Login"
-                                    onClick={()=>{}}
-                                    fill
-                                    color="#00de90"
-                                />
-                            </Link>
-                        </Box>
-                    </Box> */}
 
                     <Box width="100%" direction="row" align="center" justify="between" background={grey} pad="small">
                         
@@ -116,6 +103,33 @@ class Home extends Component {
                             }
                         </Box>
                         <Nav direction="row">
+                            {!this.props.data.verified && this.state.isLoggedIn &&
+                                <Box width={{"min":"200px"}} height="45px" direction="row" background={orange} round="medium" align="center" gap="small" pad="small">
+                                    <StatusCritical color={anchorColourAlt} />
+                                    <Text color={anchorColourAlt}>Email not verified!</Text>
+                                    {!this.state.resent ?
+                                        <Button 
+                                            size="small" 
+                                            color={brightYellow} 
+                                            icon={<Refresh />} 
+                                            primary label="Resend" 
+                                            onClick={() => this.resendEmail()}
+                                            gap="xxsmall"
+                                            margin="none"
+                                        />
+                                    :
+                                        <Button 
+                                            size="small" 
+                                            color={grey} 
+                                            icon={<CheckboxSelected color={brightYellow} />} 
+                                            primary label="Sent!" 
+                                            disabled="true"
+                                            gap="xxsmall"
+                                        />
+                                        
+                                    }
+                                </Box>
+                            }
                             <Link to="/" style={{ textDecoration: 'none' }}>
                                 <Box direction="row" align="center">
                                     <Organization color={anchorColourAlt} size='20px' />
