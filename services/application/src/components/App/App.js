@@ -7,6 +7,8 @@ import { Box, Heading, Grommet } from 'grommet';
 import {Home, Login, Logout, Register, Loading} from 'Pages';
 
 class App extends Component {
+    _isMounted = false;
+
     constructor(props) {
         super(props);
         this.state = {
@@ -17,28 +19,31 @@ class App extends Component {
         };
 
         this.logout = this.logout.bind(this);
+        this.login = this.login.bind(this);
         this.setPlayerTag = this.setPlayerTag.bind(this);
-        this.setAdmin = this.setAdmin.bind(this);
     }
 
-    login() {
-        this.setState({isLoggedIn: true});
+    login(data) {
+        this.setState({isLoggedIn: true, playerTag:data.playerTag});
     }
 
     logout() {
-        this.setState({isLoggedIn: false});
+        this.setState({isLoggedIn: false, playerTag:""});
+
     }
 
     setPlayerTag(tag) {
         this.setState({playerTag: tag});
     }
 
-    setAdmin(admin) {
-        this.setState({isAdmin: admin});
+    componentWillUnmount() {
+        this._isMounted = false;
     }
 
     componentDidMount() {
-        console.log("component did mount");
+        this._isMounted = true;
+
+
         fetch('/api/checkToken', {
             headers: {
                 'Accept': 'application/json, text/plain, */*',  // It can be used to overcome cors errors
@@ -48,27 +53,28 @@ class App extends Component {
         .then(res => {
             console.log(res.status);
             if (res.status === 200) {
-                this.setState({
-                    msg: "USER LOGGED IN!",
-                    isLoggedIn:true,
-                    loading:false
-                });
                 return res.json();
             } else {
-                this.setState({
-                    msg: "PLEASE LOGIN FIRST.",
-                    isLoggedIn:false,
-                    loading:false
-                });
+                if (this._isMounted) {
+                    this.setState({
+                        msg: "PLEASE LOGIN FIRST.",
+                        isLoggedIn:false,
+                        loading:false
+                    });
+                }
             }
         })
         .then(data => {
             if (data) {
                 //console.log(data);
-                this.setState({
-                    playerTag: data.playerTag,
-                    isAdmin: data.isAdmin
-                });
+                if (this._isMounted) {
+                    this.setState({
+                        playerTag: data.playerTag,
+                        msg: "USER LOGGED IN!",
+                        isLoggedIn:true,
+                        loading:false
+                    });
+                }
             }
             
         }) 
@@ -85,19 +91,14 @@ class App extends Component {
             login: this.login,
             logout:this.logout,
             setPlayerTag: this.setPlayerTag,
-            setAdmin:this.setAdmin,
             playerTag:this.state.playerTag,
             isLoggedIn:this.state.isLoggedIn
         };
 
         var content = this.state.loading ? <Loading /> :
             <Home data={propsData}/>
-        console.log("herer 1", content, this.state.loading );
         return (
-            
-            
           <BrowserRouter>
-                <div>NAVIGATION</div>
                 <Switch>
                     <Route exact path="/" component={() => 
                         content
@@ -109,7 +110,8 @@ class App extends Component {
                         <Logout data={propsData}/>
                     }/>
                     <Route exact path="/register" component={() =>
-                        <Registration data={propsData}/>
+                        <Register data={propsData}/>
+
                     }/>
                     
                 </Switch>
