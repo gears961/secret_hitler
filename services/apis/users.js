@@ -1,6 +1,7 @@
 require('dotenv').config()
 
 var Users = require("../models/User");
+var General = require("../models/User");
 const withAuth = require('./middleware');
 const bcrypt = require('bcryptjs');
 const Cryptr = require('cryptr');
@@ -25,7 +26,12 @@ function createSession(email, req, res, data) {
     const token = jwt.sign({emailhash}, process.env.SECRET, {
         expiresIn: 60*60*100
     });
-    return res.cookie('token', token, { httpOnly: true }).status(200).json(data);
+
+    collectStats((err, d) => {
+        data.totalUsers = d.length;
+        return res.cookie('token', token, { httpOnly: true }).status(200).json(data);
+    });
+    
 }
 
 
@@ -119,6 +125,10 @@ function createUser(data, callback) {
     Users.create(user, callback);
 }
 
+function collectStats(callback) {
+    getAll(callback);
+}
+
 module.exports = function(app) {
 
     // Authentication
@@ -156,9 +166,14 @@ module.exports = function(app) {
         var email = decode(decoded.emailhash);
         
         findByEmail(email, function(err, data) {
-            return res.status(200).json({
-                playerTag: data.playerTag,
-                verified: data.verified
+            var playerTag = data.playerTag;
+            var verified = data.verified;
+            collectStats((err, data) => {
+                return res.status(200).json({
+                    playerTag: playerTag,
+                    verified: verified,
+                    totalUsers: data.length
+                });
             });
         });
     });
