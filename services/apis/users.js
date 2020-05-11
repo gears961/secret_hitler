@@ -34,7 +34,6 @@ function createSession(email, req, res, data) {
     
 }
 
-
 function killSession(req, res) {
     // kill session
     
@@ -132,6 +131,11 @@ function collectStats(callback) {
 module.exports = function(app) {
 
     // Authentication
+    app.post('/api/playAsGuest', (req, res) => {
+        var formData = req.body;
+        return createSession("guest."+formData.playerTag, req, res, {playerTag: formData.playerTag});
+    });
+
     app.post('/api/signup', (req, res) => {
         var formData = req.body;
         findByEmail(formData.email, (err, data) => {
@@ -164,10 +168,10 @@ module.exports = function(app) {
         var token = req.headers.cookie.split("=")[1];
         var decoded = jwt.verify(token, process.env.SECRET);
         var email = decode(decoded.emailhash);
-        
-        findByEmail(email, function(err, data) {
-            var playerTag = data.playerTag;
-            var verified = data.verified;
+
+        if (email.startsWith("guest.")) {
+            var playerTag = email.split(".")[1];
+            var verified = true;
             collectStats((err, data) => {
                 return res.status(200).json({
                     playerTag: playerTag,
@@ -175,7 +179,21 @@ module.exports = function(app) {
                     totalUsers: data.length
                 });
             });
-        });
+        } 
+        else {
+        
+            findByEmail(email, function(err, data) {
+                var playerTag = data.playerTag;
+                var verified = data.verified;
+                collectStats((err, data) => {
+                    return res.status(200).json({
+                        playerTag: playerTag,
+                        verified: verified,
+                        totalUsers: data.length
+                    });
+                });
+            });
+        }
     });
 
     app.post('/api/sendVerification', (req, res) => {

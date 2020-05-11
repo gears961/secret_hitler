@@ -14,7 +14,8 @@ class Home extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            resent: false
+            resent: false,
+            tag:''
         };
     }
 
@@ -29,6 +30,37 @@ class Home extends Component {
         event.preventDefault();
     }
 
+    playAsGuest = () => {
+        var items=["nar","An","Alfr","Alvi","Ari","Arinbjorn","Arngeir","Arngrim","Arnfinn","Asgeirr","Askell","Asvald","Bard","Baror","Bersi","Borkr","Bjarni","Bjorn","Brand","Brandr","Cairn","Canute","Dar","Einarr","Eirik","Egill","Engli","Eyvindr","Erik","Eyvind","Finnr","Floki","Fromund","Geirmundr","Geirr","Geri","Gisli","Gizzur","Gjafvaldr","Glumr","Gorm","Grmir","Gunnarr","Guomundr","Hak","Halbjorn","Halfdan","Hallvard","Hamal","Hamundr","Harald","Harek","Hedinn","Helgi","Henrik","Herbjorn","Herjolfr","Hildir","Hogni","Hrani","Ivarr","Hrolf","Jimmy","Jon","Jorund","Kalf","Ketil","Kheldar","Klaengr","Knut","Kolbeinn","Kolli","Kollr","Lambi","Magnus","Moldof","Mursi","Njall","Oddr","Olaf","Orlyg","Ormr","Ornolf","Osvald","Ozurr","Poror","Prondir","Ragi","Ragnvald","Refr","Runolf","Saemund","Siegfried","Sigmundr","Sigurd","Sigvat","Skeggi","Skomlr","Slode","Snorri","Sokkolf","Solvi","Surt","Sven","Thangbrand","Thjodoft","Thorod","Thorgest","Thorvald","Thrain","Throst","Torfi","Torix","Tryfing","Ulf","Valgaror","Vali","Vifil","Vigfus","Vika","Waltheof"];
+
+        fetch('/api/playAsGuest', {
+            method: 'POST',
+            body: JSON.stringify({playerTag: items[Math.floor(Math.random()*items.length)]}),
+            headers: {
+                'Accept': 'application/json, text/plain, */*',  // It can be used to overcome cors errors
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(res => {
+            return res.json();
+        })
+        .then(data => {
+            if ('error' in data) {
+                this.setState({error: data.msg});
+            }
+            else {
+                data.guest = true;
+                data.verified = true;
+                this.props.data.login(data);
+                this.props.history.push('/');
+            }
+        }) 
+        .catch(err => {
+            console.error(err);
+        });
+    }
+
+    
     componentDidMount() {
         this.setState(this.props.data);
     }
@@ -139,7 +171,7 @@ class Home extends Component {
                                 </Box>
                             </Link>
                             {!this.state.isLoggedIn && 
-                                <Box direction="row" align="center">
+                                <Box direction="row" align="center" onClick={() => this.playAsGuest()}>
                                     <Gamepad color={anchorColourAlt} size='20px' />
                                     <Anchor label="Play as Guest" key="pg" color={anchorColour}  margin="xsmall"/>
                                 </Box>
