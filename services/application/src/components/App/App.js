@@ -20,7 +20,8 @@ class App extends Component {
             totalUsers: 0,
             currentGames: 0,
             totalLiberalWins: 0,
-            totalFascistWins: 0
+            totalFascistWins: 0,
+            guest: false
         };
 
         this.logout = this.logout.bind(this);
@@ -29,7 +30,7 @@ class App extends Component {
     }
 
     login(data) {
-        this.setState({isLoggedIn: true, playerTag:data.playerTag, verified:data.verified, totalUsers: data.totalUsers});
+        this.setState({isLoggedIn: true, playerTag:data.playerTag, verified:data.verified, totalUsers: data.totalUsers, guest:data.guest});
     }
 
     logout() {
@@ -41,7 +42,8 @@ class App extends Component {
             totalUsers: 0,
             currentGames: 0,
             totalLiberalWins: 0,
-            totalFascistWins: 0
+            totalFascistWins: 0,
+            guest:false
         });
 
     }
@@ -113,7 +115,8 @@ class App extends Component {
             totalUsers:this.state.totalUsers,
             currentGames:this.state.currentGames,
             totalLiberalWins:this.state.totalLiberalWins,
-            totalFascistWins:this.state.totalFascistWins
+            totalFascistWins:this.state.totalFascistWins,
+            guest:this.state.guest
         };
 
         var content = this.state.loading ? <Loading /> :
