@@ -14,7 +14,9 @@ import {
     FormField,
     MaskedInput,
     TextInput,
-    Layer
+    Layer,
+    Meter,
+    ResponsiveContext
 
 } from 'grommet';
 import { grommet } from "grommet/themes";
@@ -33,7 +35,11 @@ import {
     Tag, 
     Alert
 } from "grommet-icons";
-import { AiFillEdit } from "react-icons/ai";
+import { AiFillEdit,  } from "react-icons/ai";
+import { RiGamepadLine } from "react-icons/ri";
+import { IoMdTrophy } from "react-icons/io";
+import { GiLibertyWing, GiMinigun } from "react-icons/gi";
+import { FaSkull } from "react-icons/fa";
 
 class Profile extends Component {
     _isMounted = false;
@@ -49,7 +55,14 @@ class Profile extends Component {
             canEdit:false,
             edit:false,
             error:'',
-            data: {}
+            data: {
+                playerTag: '',
+                numberOfGames: 0,
+                numberOfWins: 0,
+                liberals: 0,
+                facists: 0,
+                hitler: 0
+            }
         };
         
     }
@@ -104,9 +117,34 @@ class Profile extends Component {
             this.setState({message: "Password does not match."});
         }
         else {  
-
-            this.setState({edit: false});
-            console.log(this.state);
+            fetch('/api/users/update', {
+                method: 'POST',
+                body: JSON.stringify({
+                    playerTag:this.state.playerTag,
+                    password:this.state.password
+                }),
+                headers: {
+                    'Accept': 'application/json, text/plain, */*',  // It can be used to overcome cors errors
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(res => {
+                return res.json();
+            })
+            .then(data => {
+                if ('error' in data) {
+                    this.setState({error: data.msg});
+                }
+                else {
+                    this.setState({edit: false, playerTag:data.playerTag});
+                    console.log(this.state);
+                    this.props.data.setPlayerTag(data.playerTag);
+                }
+            }) 
+            .catch(err => {
+                alert('Error logging in please try again');
+            });
+            
         }
     }
 
@@ -150,7 +188,8 @@ class Profile extends Component {
                         else {
                             if (this._isMounted) {
                                 this.setState({
-                                    data: data
+                                    data: data.data,
+                                    playerTag: this.props.data.playerTag
                                 });
                             }
                         }
@@ -178,6 +217,103 @@ class Profile extends Component {
         const brightYellow = "#fdde4e";
         const back = "	#fbb867";
         const blue = "#6d97b9";
+
+        console.log(this.state);
+        
+        const stats = 
+            <Box width="100%" height="100%" direction="column">
+                <Box 
+                    width="100%"
+                    direction="row"
+                    align="center"
+                    justify="between"
+                >
+                    <Box direction="row" align="center" gap="medium">
+                        <RiGamepadLine color={grey} size="20px"/>
+                        <Text color={grey} size="large">
+                            Total number of games
+                        </Text>
+                    </Box>
+                    <Box direction="row" align="center" justify="end" gap="medium">
+                        <Text color={grey} size="large">
+                            {this.state.data.numberOfGames}                                    
+                        </Text>
+                    </Box>
+                </Box>
+                <Box 
+                    width="100%"
+                    direction="row"
+                    align="center"
+                    justify="between"
+                >
+                    <Box direction="row" align="center" gap="medium">
+                        <IoMdTrophy color={grey} size="20px"/>
+                        <Text color={grey} size="large">
+                            Total number of Wins
+                        </Text>
+                    </Box>
+                    <Box direction="row" align="center" justify="end" gap="medium">
+                        <Text color={grey} size="large">
+                            {this.state.data.numberOfWins}
+                        </Text>
+                    </Box>
+                </Box>
+                <Box 
+                    width="100%"
+                    direction="row"
+                    align="center"
+                    justify="between"
+                >
+                    <Box direction="row" align="center" gap="medium">
+                        <GiLibertyWing color={blue} size="20px"/>
+                        <Text color={blue} size="large">
+                            Total number of liberal wins
+                        </Text>
+                    </Box>
+                    <Box direction="row" align="center" justify="end" gap="medium">
+                        <Text color={blue} size="large">
+                            {this.state.data.liberals}
+                        </Text>
+                    </Box>
+                </Box>
+                <Box 
+                    width="100%"
+                    direction="row"
+                    align="center"
+                    justify="between"
+                >
+                    <Box direction="row" align="center" gap="medium">
+                        <GiMinigun color={orange} size="20px"/>
+                        <Text color={orange} size="large">
+                            Total number of fascist wins
+                        </Text>
+                    </Box>
+                    <Box direction="row" align="center" justify="end" gap="medium">
+                        <Text color={orange} size="large">
+                            {this.state.data.facists}
+                        </Text>
+                    </Box>
+                </Box>
+                <Box 
+                    width="100%"
+                    direction="row"
+                    align="center"
+                    justify="between"
+                >
+                    <Box direction="row" align="center" gap="medium">
+                        <FaSkull color={orange} size="20px"/>
+                        <Text color={orange} size="large">
+                            Total number of hitler wins
+                        </Text>
+                    </Box>
+                    <Box direction="row" align="center" justify="end" gap="medium">
+                        <Text color={orange} size="large">
+                            {this.state.data.hitler}                                    
+                        </Text>
+                    </Box>
+                </Box>
+            </Box>
+        ;
 
         return (
             <Box  
@@ -289,8 +425,54 @@ class Profile extends Component {
 
                     <Box 
                         width="100%" 
-                        height={{"min":"200px"}} margin="small" background={grey2}>
-                        hello 2
+                        height={{"min":"200px"}} 
+                        margin="small" 
+                        gap="small"
+                        direction="row"
+                        align="start"
+                        justify="evenly"
+                        pad="large"
+                    >
+                        <ResponsiveContext.Consumer>
+                            {responsive =>
+                                responsive === "small" ? (
+                                    <Box 
+                                        width="100%"
+                                        direction="column"
+                                        align="center"
+                                        justify="start"
+                                        pad="medium"
+                                        gap="small"
+                                        border = {{
+                                            "color": "border",
+                                            "size": "medium",
+                                            "side": "all"
+                                        }}
+                                        round="10px"
+                                    >
+                                        {stats}
+                                    </Box>
+                                ) : (
+                                    <Box 
+                                        width="35%"
+                                        direction="column"
+                                        align="center"
+                                        justify="start"
+                                        pad="medium"
+                                        gap="small"
+                                        border = {{
+                                            "color": "border",
+                                            "size": "medium",
+                                            "side": "all"
+                                        }}
+                                        round="10px"
+                                    >
+                                        {stats}
+                                    </Box>
+                                )
+                            }
+                        </ResponsiveContext.Consumer>
+                        
                     </Box>       
                     
                 </Box>

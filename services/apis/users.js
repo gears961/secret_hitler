@@ -132,6 +132,17 @@ function collectStats(callback) {
     getAll(callback);
 }
 
+function updateUserInfo(email, data, callback) {
+    var user = {playerTag: data.playerTag};
+    if (data.password){
+        var salt = bcrypt.genSaltSync(15);
+        var pass = bcrypt.hashSync(data.password, salt);
+        user.password = pass;
+    }
+
+    Users.updateOne({ email: email }, { $set: user }, callback);
+}
+
 module.exports = function(app) {
 
     // Authentication
@@ -209,7 +220,7 @@ module.exports = function(app) {
         }
     });
 
-    app.get('/api/users/:user', withAuth, function(req, res) {
+    app.get('/api/users/:user', function(req, res) {
         var user = req.params.user;
 
         findByTag(user, (err, data) => {
@@ -226,6 +237,23 @@ module.exports = function(app) {
                     hitler: data.hitler
                 };
                 return res.status(200).json({ data: result });
+            }
+        });
+    });
+
+    app.post('/api/users/update', withAuth, function(req, res) {
+        var token = req.headers.cookie.split("=")[1];
+        var decoded = jwt.verify(token, process.env.SECRET);
+        var email = decode(decoded.emailhash);
+
+        var formData = req.body;
+
+        updateUserInfo(email, formData, (err, data) => {
+            if (err || !data) {
+                return res.status(401).json({ error: 1, msg: "Could not update user!" });
+            }
+            else {
+                return res.status(200).json({  playerTag: formData.playerTag });
             }
         });
     });
