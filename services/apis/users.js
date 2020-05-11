@@ -65,6 +65,10 @@ function findByEmail(email, callback) {
     Users.findOne({email: email}, callback);
 }
 
+function findByTag(tag, callback) {
+    Users.findOne({playerTag: tag}, callback);
+}
+
 function getAll(callback) {
     Users.find({}, callback);
 }
@@ -141,14 +145,23 @@ module.exports = function(app) {
         findByEmail(formData.email, (err, data) => {
             if (err || !data) {
                 // email doesn't exist we are good
-                createUser(formData, (err, data) => {
-                    if (err) return res.status(400).json({error: err, msg:"Failed to create user."});
-                    else return createSession(formData.email, req, res, {playerTag: formData.playerTag});
+                findByTag(formData.playerTag, (err, data) => {
+                    if (err || !data) {
+                        // tag doesn't exist we are good
+                        createUser(formData, (err, data) => {
+                            if (err) return res.status(400).json({error: err, msg:"Failed to create user."});
+                            else return createSession(formData.email, req, res, {playerTag: formData.playerTag});
+                        });
+                    } 
+                    else {
+                        return res.status(401).json({ error: 1, msg: "Player Tag exists" });
+                    }
                 });
             } 
             else {
                 return res.status(401).json({ error: 1, msg: "Email exists" });
             }
+            
         });
     });
 
@@ -194,6 +207,27 @@ module.exports = function(app) {
                 });
             });
         }
+    });
+
+    app.get('/api/users/:user', withAuth, function(req, res) {
+        var user = req.params.user;
+
+        findByTag(user, (err, data) => {
+            if (err || !data) {
+                return res.status(404).json({ error: 1, msg: "Could not find user!" });
+            }
+            else {
+                var result = {
+                    playerTag: data.playerTag,
+                    numberOfGames: data.numberOfGames,
+                    numberOfWins: data.numberOfWins,
+                    liberals: data.liberals,
+                    facists: data.facists,
+                    hitler: data.hitler
+                };
+                return res.status(200).json({ data: result });
+            }
+        });
     });
 
     app.post('/api/sendVerification', (req, res) => {
