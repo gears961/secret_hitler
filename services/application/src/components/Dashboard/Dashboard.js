@@ -10,22 +10,16 @@ import {
     Text, 
     Box, 
     Button, 
-    Avatar, 
+    TextInput, 
     Image, 
-    ResponsiveContext, 
-    Anchor, 
-    Paragraph,
-    Heading, 
-    Table,
-    TableBody,
-    TableRow,
-    TableCell,
-    TableHeader 
+    ResponsiveContext
 } from 'grommet';
 
 import { Login, Menu, Logout, Add, Close, Analytics, Chat, Clock, Configure, Help, Projects, StatusInfoSmall } from "grommet-icons";
 
 import {Banner, BannerAlt} from 'Media';
+import { RiUser4Line } from "react-icons/ri";
+import { AiFillEdit, AiOutlineUsergroupAdd } from "react-icons/ai";
 
 import {Rules} from 'Components';
 
@@ -35,10 +29,10 @@ class Dashboard extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            open: false
+            roomCode:'',
+            error: ''
         };
-        
-    }
+    }   
 
     handleInputChange = (event) => {
         const { value, name } = event.target;
@@ -47,13 +41,19 @@ class Dashboard extends Component {
         });
     }
 
-    setOpen = (val) => {
-        console.log(val);
-        this.setState({open: val});
-    }
-
     onSubmit = (event) => {
         event.preventDefault();
+    }
+
+    joinGame = () => {
+        // display an error if room is invalid 
+        var rc = this.state.roomCode;
+        this.setState({error:"Invalid Room ID: " + rc, roomCode:''});
+        this.setState({roomCode:''});
+    }
+
+    createGame = () => {
+        console.log("CREATE GAME!!!");
     }
 
     componentDidMount() {
@@ -82,8 +82,110 @@ class Dashboard extends Component {
             <Rules />
         ;
         const ls =
-            <Box fill background={grey} round="xsmall" overflow="auto">
+            <Box 
+                fill 
+                background={grey} 
+                round="xsmall" 
+                direction="column"
+                gap="xsmall"
+                justify="start"
+                align="center"
+                overflow="auto"
+                pad="small"
+            >
+                <Box width="100%" height={{"min":"153px"}} direction="row" justify="evenly">
+                    <Box 
+                        width="100px" 
+                        height={{"min":"150px"}} 
+                        direction="column" 
+                        align="center" 
+                        justify="between"
+                    >
+                        <Text color={offWhite} size="80px">{this.props.data.totalUsers}</Text>
+                        <Text color={offWhite} size="small" style={{"textAlign":"center"}}>Total Users</Text>
 
+                    </Box>
+                    <Box 
+                        width="100px" 
+                        height={{"min":"150px"}} 
+                        direction="column" 
+                        align="center" 
+                        justify="between"
+                    >
+                        <Text color={back} size="80px">{this.props.data.currentGames}</Text>
+                        <Text color={offWhite} size="small" style={{"textAlign":"center"}}>Current Games</Text>
+
+                    </Box>
+                    <Box 
+                        width="100px" 
+                        height={{"min":"150px"}} 
+                        direction="column" 
+                        align="center" 
+                        justify="between"
+                    >
+                        <Text color={blue} size="80px">{this.props.data.totalLiberalWins}</Text>
+                        <Text color={offWhite} size="small" style={{"textAlign":"center"}}>Total Liberal Wins</Text>
+
+                    </Box>
+                    <Box 
+                        width="100px" 
+                        height={{"min":"150px"}}  
+                        direction="column" 
+                        align="center" 
+                        justify="between"
+                    >
+                        <Text color={orange} size="80px">{this.props.data.totalFascistWins}</Text>
+                        <Text color={offWhite} size="small" style={{"textAlign":"center"}}>Total Fascist Wins</Text>
+
+                    </Box>
+                </Box>
+                <Box width="98%" height="2px" background={offWhite} margin={{"top":"15px", "bottom":"20px"}} />
+
+                {this.state.error != '' && 
+                    <Box 
+                        width="100%" 
+                        height={{"min":"80px"}} 
+                        direction="row" 
+                        align="center" 
+                        justify="between" 
+                        background={orange}
+                        round="small"
+                        pad="medium"
+                    >
+                        <Text color={offWhite} size="large">{this.state.error}</Text>
+                    </Box>
+                }
+
+
+                <Box width="100%" height={{"min":"120px"}} direction="row" align="center" justify="between">
+                    <TextInput
+                        placeholder="Room ID"
+                        value={this.state}
+                        name="roomCode"
+                        style={{"fontSize":"68px"}}
+                        onChange={event => this.handleInputChange(event)}
+                    />
+                    <Button 
+                        primary 
+                        icon={<AiOutlineUsergroupAdd />}
+                        label="Join" 
+                        color={back} 
+                        margin={{"left":"30px"}} 
+                        style={{"fontSize":"45px", "width":"200px", "height":"100px", "borderRadius":"10px"}}
+                        onClick={() => this.joinGame()}
+                    />
+                </Box>
+                <Box width="100%" height={{"min":"120px"}} direction="row" align="center" justify="between" margin={{"top":"25px"}}>
+                    
+                    <Button 
+                        primary 
+                        icon={<AiFillEdit />}
+                        label="Create Game" 
+                        color={back} 
+                        style={{"fontSize":"45px", "width":"100%", "height":"100px", "borderRadius":"10px"}}
+                        onClick={() => this.createGame()}
+                    />
+                </Box>
             </Box>
         ;
 

@@ -356,8 +356,12 @@ class Rules extends Component {
 
                     
                     
-
-                    <Anchor href="https://cdn.vapid.site/sites/a67e0c72-4902-4365-a899-3386df73c2c4/assets/Secret_Hitler_Rules-023bc755617986cb2276a3b6920e43e0.pdf" label="original rules document" style={{"marginTop":"30px", "marginBottom":"30px"}}/>
+                    <Paragraph fill size="medium" color={offWhite}>
+                        <Anchor href="https://cdn.vapid.site/sites/a67e0c72-4902-4365-a899-3386df73c2c4/assets/Secret_Hitler_Rules-023bc755617986cb2276a3b6920e43e0.pdf" label="original rules document" style={{"marginTop":"30px", "marginBottom":"30px"}}/>
+                        <br />
+                        <br />
+                        <br />
+                    </Paragraph>
                 </Box>
                 
             </Box>

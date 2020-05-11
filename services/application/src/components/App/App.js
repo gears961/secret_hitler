@@ -16,7 +16,11 @@ class App extends Component {
             loading:true,
             isLoggedIn:false,
             playerTag:'',
-            verified:false
+            verified:false,
+            totalUsers: 0,
+            currentGames: 0,
+            totalLiberalWins: 0,
+            totalFascistWins: 0
         };
 
         this.logout = this.logout.bind(this);
@@ -25,11 +29,20 @@ class App extends Component {
     }
 
     login(data) {
-        this.setState({isLoggedIn: true, playerTag:data.playerTag, verified:data.verified});
+        this.setState({isLoggedIn: true, playerTag:data.playerTag, verified:data.verified, totalUsers: data.totalUsers});
     }
 
     logout() {
-        this.setState({isLoggedIn: false, playerTag:""});
+        this.setState({
+            mag:'',
+            isLoggedIn:false,
+            playerTag:'',
+            verified:false,
+            totalUsers: 0,
+            currentGames: 0,
+            totalLiberalWins: 0,
+            totalFascistWins: 0
+        });
 
     }
 
@@ -67,14 +80,15 @@ class App extends Component {
         })
         .then(data => {
             if (data) {
-                //console.log(data);
+                console.log(data);
                 if (this._isMounted) {
                     this.setState({
                         playerTag: data.playerTag,
                         msg: "USER LOGGED IN!",
                         isLoggedIn:true,
                         loading:false,
-                        verified: data.verified
+                        verified: data.verified,
+                        totalUsers: data.totalUsers
                     });
                 }
             }
@@ -95,7 +109,11 @@ class App extends Component {
             setPlayerTag: this.setPlayerTag,
             playerTag:this.state.playerTag,
             verified:this.state.verified,
-            isLoggedIn:this.state.isLoggedIn
+            isLoggedIn:this.state.isLoggedIn,
+            totalUsers:this.state.totalUsers,
+            currentGames:this.state.currentGames,
+            totalLiberalWins:this.state.totalLiberalWins,
+            totalFascistWins:this.state.totalFascistWins
         };
 
         var content = this.state.loading ? <Loading /> :
