@@ -7,4 +7,18 @@ body {
 
 * {
     font-family: 'Montserrat', sans-serif !important;
+    transition-duration: 0.5s !important;
+}
+
+.game-card {
+    -webkit-box-shadow: 5px 5px 9px -7px rgba(0,0,0,0.29);
+    -moz-box-shadow: 5px 5px 9px -7px rgba(0,0,0,0.29);
+    box-shadow: 5px 5px 9px -7px rgba(0,0,0,0.29);
+}
+
+.game-card-border {
+    -webkit-box-shadow: 5px 5px 9px -7px rgba(0,0,0,0.29);
+    -moz-box-shadow: 5px 5px 9px -7px rgba(0,0,0,0.29);
+    box-shadow: 5px 5px 9px -7px rgba(0,0,0,0.29);
+    border: 1px solid rgba(100, 100, 100, 0.24);
 }

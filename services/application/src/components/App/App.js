@@ -4,7 +4,7 @@ import './App.css';
 import { Link, Route, Switch, BrowserRouter } from 'react-router-dom';
 import { Box, Heading, Grommet } from 'grommet';
 
-import {Home, Login, Logout, Register, Loading, Verify, Profile} from 'Pages';
+import {Home, Login, Logout, Register, Loading, Verify, Profile, Game} from 'Pages';
 
 class App extends Component {
     _isMounted = false;
@@ -143,6 +143,10 @@ class App extends Component {
                     }/>
                     <Route exact path="/profile" component={() =>
                         <Profile data={propsData}/>
+
+                    }/>
+                    <Route exact path="/game" component={() =>
+                        <Game data={propsData}/>
 
                     }/>
                     
