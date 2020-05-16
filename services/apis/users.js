@@ -74,7 +74,20 @@ function getAll(callback) {
 }
 
 function verifyEmail(email, callback) {
-    Users.updateOne({ email: email }, { $set: { verified: true } }, callback);
+    Users.findOne({email: email}, (err, data) => {
+        if (err | data) {
+            callback(null, {msg: "Email not found!"});
+        }
+        else {
+            if (data.verified){
+                callback(null, {msg: "Email already verified!"});
+            }
+            else {
+                Users.updateOne({ email: email }, { $set: { verified: true } }, callback);
+            }
+        }
+    });
+    
 }
 
 function generateVerificationToken(email) {
@@ -280,7 +293,7 @@ module.exports = function(app) {
                     return res.status(401).json({ error: 1, msg: "Could not verify email!" });
                 }
                 else {
-                    return res.status(200).json({ msg: "success" }); 
+                    return res.status(200).json({ msg: data.msg }); 
                 }
             });
         }
