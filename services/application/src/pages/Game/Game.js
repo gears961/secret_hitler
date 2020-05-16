@@ -88,14 +88,17 @@ class Game extends Component {
         const blue = "#6d97b9";
 
         return (
-            <Grommet theme={customFocus} background="none">
+            <Grommet 
+                theme={customFocus}
+                background="none"
+            >
                 <Box  
                     width="100vw" 
                     min-height="100vh" 
                     direction="row" 
                     align="center" 
                     justify="center" 
-                    margin={{"top":"100px", "bottom":"100px"}}
+                    style={{"padding": "none", "margin":"none"}}
                 >
                     {!this.state.gameInProgress ? 
                         <Lobby data={{players:this.state.players}} />

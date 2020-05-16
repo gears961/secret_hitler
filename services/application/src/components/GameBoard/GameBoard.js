@@ -101,20 +101,79 @@ class GameBoard extends Component {
         const offWhite = "#fde0bc";
         const blue = "#6d97b9";
 
-        const envWidth = this.state.envWidth;
-        const M = {w: 1174, h:1660}
-        const R = {w: 738, h:1080}
-        const E = {w: 637, h:1080}
-
-        const offsetR = ((envWidth / R.w) * R.h) - (this.state.reveal * 1.5);
-        const offsetM = ((envWidth / M.w) * M.h) - this.state.reveal;
-
         return (
-            <Grommet theme={customFocus} background="none">
-                <Box direction="row" gap="large">
-                    <GameEnvelope data={{envWidth:100, role:RoleHitler, member:MemberFascist, fascist:true}}/>
-                    <GameEnvelope data={{envWidth:100, role:RoleLiberal, member:MemberLiberal, fascist:false}}/>
+            <Grommet 
+                theme={customFocus} 
+                background="none" 
+                full 
+            >
+                <Box
+                    width="100%"
+                    height="100%"
+                    direction="row"
+                    align="center"
+                    justify="evenly"
+                    pad="small"
+                >
+                    <Box
+                        width="12%"
+                        height="100%"
+                        direction="column"
+                        align="center"
+                        justify="between"
+                        background={grey}
+                        round="xsmall"
+                        pad="small"
+                    >
+                        <Box
+                            width="100%"
+                            height="70%"
+                            direction="column"
+                            align="center"
+                            justify="start"
+                            pad="10px"
+                            overflow="auto"
+                        >
+                            <Text color={offWhite} style={{"textAlign": "center"}}>Party Membership &amp; Secret Role</Text>
+                            <Box height="60px"/>
+                            <GameEnvelope 
+                                data={{
+                                    envWidth:90, 
+                                    role:RoleHitler, 
+                                    member:MemberFascist, 
+                                    fascist:true,
+                                    hitler:true
+                                }}
+                            />
+                        </Box>
+                        <Box height="28%" width="100%" background={offWhite} pad="small" round="xsmall">
+                            Notes
+                        </Box>
+                    </Box>
+                    <Box
+                        width="64%"
+                        height="100%"
+                        direction="column"
+                        align="center"
+                        justify="between"
+                        background={grey}
+                        round="xsmall"
+                    >
+                        BOARD
+                    </Box>
+                    <Box
+                        width="22%"
+                        height="100%"
+                        direction="column"
+                        align="center"
+                        justify="between"
+                        background={grey}
+                        round="xsmall"
+                    >
+                        INFO
+                    </Box>
                 </Box>
+
                 
             </Grommet>
              
