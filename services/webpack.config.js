@@ -52,6 +52,7 @@ module.exports = {
             Components: path.resolve(__dirname, 'application/src/components/'),
             Pages: path.resolve(__dirname, 'application/src/pages/'),
             Media: path.resolve(__dirname, 'application/media/'),
+            GameAssets: path.resolve(__dirname, 'application/media/game_assets/'),
         }
     },
     
