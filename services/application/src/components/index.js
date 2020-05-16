@@ -1,3 +1,6 @@
 export {default as App} from './App/App'
 export {default as Dashboard} from './Dashboard/Dashboard'
 export {default as Rules} from './Rules/Rules'
+export {default as Lobby} from './Lobby/Lobby'
+export {default as GameBoard} from './GameBoard/GameBoard'
+export {default as GameEnvelope} from './GameEnvelope/GameEnvelope'
