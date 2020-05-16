@@ -53,7 +53,7 @@ class Game extends Component {
             this.setState({reveal: 0});
         }
         else {
-            this.setState({reveal: envWidth});
+            this.setState({reveal: this.state.envWidth});
         }
     }
 
