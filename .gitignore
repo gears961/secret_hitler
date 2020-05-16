@@ -108,3 +108,6 @@ applicationBak
 applicationBak\*
 
 .env
+
+# ASSETS
+public/*.png
