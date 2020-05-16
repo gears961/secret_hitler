@@ -59,12 +59,7 @@ class Verify extends Component {
                     return res.json();
                 })
                 .then(data => {
-                    if ('error' in data) {
-                        this.setState({msg: data.msg});
-                    }
-                    else {
-                        this.setState({msg: "Email successfully verified!"});
-                    }
+                    this.setState({msg: data.msg});
                 }) 
                 .catch(err => {
                     console.log(err);

@@ -65,12 +65,29 @@ function findByEmail(email, callback) {
     Users.findOne({email: email}, callback);
 }
 
+function findByTag(tag, callback) {
+    Users.findOne({playerTag: tag}, callback);
+}
+
 function getAll(callback) {
     Users.find({}, callback);
 }
 
 function verifyEmail(email, callback) {
-    Users.updateOne({ email: email }, { $set: { verified: true } }, callback);
+    Users.findOne({email: email}, (err, data) => {
+        if (err | data) {
+            callback(null, {msg: "Email not found!"});
+        }
+        else {
+            if (data.verified){
+                callback(null, {msg: "Email already verified!"});
+            }
+            else {
+                Users.updateOne({ email: email }, { $set: { verified: true } }, callback);
+            }
+        }
+    });
+    
 }
 
 function generateVerificationToken(email) {
@@ -128,6 +145,17 @@ function collectStats(callback) {
     getAll(callback);
 }
 
+function updateUserInfo(email, data, callback) {
+    var user = {playerTag: data.playerTag};
+    if (data.password){
+        var salt = bcrypt.genSaltSync(15);
+        var pass = bcrypt.hashSync(data.password, salt);
+        user.password = pass;
+    }
+
+    Users.updateOne({ email: email }, { $set: user }, callback);
+}
+
 module.exports = function(app) {
 
     // Authentication
@@ -141,14 +169,23 @@ module.exports = function(app) {
         findByEmail(formData.email, (err, data) => {
             if (err || !data) {
                 // email doesn't exist we are good
-                createUser(formData, (err, data) => {
-                    if (err) return res.status(400).json({error: err, msg:"Failed to create user."});
-                    else return createSession(formData.email, req, res, {playerTag: formData.playerTag});
+                findByTag(formData.playerTag, (err, data) => {
+                    if (err || !data) {
+                        // tag doesn't exist we are good
+                        createUser(formData, (err, data) => {
+                            if (err) return res.status(400).json({error: err, msg:"Failed to create user."});
+                            else return createSession(formData.email, req, res, {playerTag: formData.playerTag});
+                        });
+                    } 
+                    else {
+                        return res.status(401).json({ error: 1, msg: "Player Tag exists" });
+                    }
                 });
             } 
             else {
                 return res.status(401).json({ error: 1, msg: "Email exists" });
             }
+            
         });
     });
 
@@ -196,6 +233,44 @@ module.exports = function(app) {
         }
     });
 
+    app.get('/api/users/:user', function(req, res) {
+        var user = req.params.user;
+
+        findByTag(user, (err, data) => {
+            if (err || !data) {
+                return res.status(404).json({ error: 1, msg: "Could not find user!" });
+            }
+            else {
+                var result = {
+                    playerTag: data.playerTag,
+                    numberOfGames: data.numberOfGames,
+                    numberOfWins: data.numberOfWins,
+                    liberals: data.liberals,
+                    facists: data.facists,
+                    hitler: data.hitler
+                };
+                return res.status(200).json({ data: result });
+            }
+        });
+    });
+
+    app.post('/api/users/update', withAuth, function(req, res) {
+        var token = req.headers.cookie.split("=")[1];
+        var decoded = jwt.verify(token, process.env.SECRET);
+        var email = decode(decoded.emailhash);
+
+        var formData = req.body;
+
+        updateUserInfo(email, formData, (err, data) => {
+            if (err || !data) {
+                return res.status(401).json({ error: 1, msg: "Could not update user!" });
+            }
+            else {
+                return res.status(200).json({  playerTag: formData.playerTag });
+            }
+        });
+    });
+
     app.post('/api/sendVerification', (req, res) => {
         var token = req.headers.cookie.split("=")[1];
         var decoded = jwt.verify(token, process.env.SECRET);
@@ -218,7 +293,7 @@ module.exports = function(app) {
                     return res.status(401).json({ error: 1, msg: "Could not verify email!" });
                 }
                 else {
-                    return res.status(200).json({ msg: "success" }); 
+                    return res.status(200).json({ msg: data.msg }); 
                 }
             });
         }
