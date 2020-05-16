@@ -30,7 +30,8 @@ class Game extends Component {
         super(props)
         this.state = {
             msg: '',
-            reveal: 0
+            reveal: 0,
+            envWidth: 300
         };
         
     }
@@ -52,7 +53,7 @@ class Game extends Component {
             this.setState({reveal: 0});
         }
         else {
-            this.setState({reveal: 300});
+            this.setState({reveal: envWidth});
         }
     }
 
@@ -81,7 +82,7 @@ class Game extends Component {
         const offWhite = "#f7e1c3";
         const blue = "#6d97b9";
 
-        const envWidth = 300;
+        const envWidth = this.state.envWidth;
         const MF = {w: 1174, h:1660}
         const RH = {w: 738, h:1080}
 
