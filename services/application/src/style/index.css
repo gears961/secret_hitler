@@ -45,6 +45,50 @@ body {
         
 }
 
+.tile-effect {
+    box-shadow: 1px 1px 0px #fde0bc,
+                2px 2px 0px #fde0bc,
+                3px 3px 0px #fde0bc,
+                4px 4px 0px #fde0bc,
+                5px 5px 0px #fde0bc,
+                6px 6px 0px #474442;
+    -webkit-box-shadow: 1px 1px 0px #fde0bc,
+                        2px 2px 0px #fde0bc,
+                        3px 3px 0px #fde0bc,
+                        4px 4px 0px #fde0bc,
+                        5px 5px 0px #fde0bc,
+                        6px 6px 0px #474442;
+    -moz-box-shadow: 1px 1px 0px #fde0bc,
+                    2px 2px 0px #fde0bc,
+                    3px 3px 0px #fde0bc,
+                    4px 4px 0px #fde0bc,
+                    5px 5px 0px #fde0bc,
+                    6px 6px 0px #474442;
+        
+}
+
+.tile-effect-rev {
+    box-shadow:         -1px -1px 0px #fde0bc,
+                        -2px -2px 0px #fde0bc,
+                        -3px -3px 0px #fde0bc,
+                        -4px -4px 0px #fde0bc,
+                        -5px -5px 0px #fde0bc,
+                        -6px -6px 0px #474442;
+    -webkit-box-shadow: -1px -1px 0px #fde0bc,
+                        -2px -2px 0px #fde0bc,
+                        -3px -3px 0px #fde0bc,
+                        -4px -4px 0px #fde0bc,
+                        -5px -5px 0px #fde0bc,
+                        -6px -6px 0px #474442;
+    -moz-box-shadow:    -1px -1px 0px #fde0bc,
+                        -2px -2px 0px #fde0bc,
+                        -3px -3px 0px #fde0bc,
+                        -4px -4px 0px #fde0bc,
+                        -5px -5px 0px #fde0bc,
+                        -6px -6px 0px #474442;
+        
+}
+
 .tile-effect-lib {
     box-shadow: 1px 1px 0px #fde0bc,
                 2px 2px 0px #fde0bc,

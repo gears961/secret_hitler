@@ -20,6 +20,7 @@ import { AiFillEye } from "react-icons/ai";
 import { FaHandPaper, FaSkull } from "react-icons/fa";
 import { BsXCircleFill, BsCircle } from "react-icons/bs";
 import { GiCardDraw, GiCardDiscard, GiEagleEmblem } from "react-icons/gi";
+import { GrPowerCycle } from "react-icons/gr";
 
 import { deepMerge } from 'grommet/utils';
 import ReactTooltip from "react-tooltip";
@@ -66,7 +67,8 @@ class GameDash extends Component {
             discardPile: 0,
             electionTracker: 0,
             numberOfFascists:0,
-            numberOfLiberals:0
+            numberOfLiberals:0,
+            host:false
         };
         
     }
@@ -80,6 +82,14 @@ class GameDash extends Component {
 
     onSubmit = (event) => {
         event.preventDefault();
+    }
+
+    resetGame = () => {
+        console.log("RESET GAME!");
+    }
+
+    leaveGame = () => {
+        console.log("LEAVE GAME!");
     }
 
     
@@ -105,6 +115,7 @@ class GameDash extends Component {
 
             var testData = {
                 role:RoleHitler, 
+                host: true,
                 member:MemberFascist, 
                 fascist:true,
                 hitler:false,
@@ -203,11 +214,11 @@ class GameDash extends Component {
                         height="100%"
                         direction="column"
                         align="center"
-                        justify="start"
+                        justify="between"
                         background={grey}
                         round="xsmall"
                         pad="medium"
-                        gap="large"
+                        gap="small"
                     >
                         <Box 
                             width="60%" 
@@ -306,7 +317,7 @@ class GameDash extends Component {
                             </Box>
                         </Box>
                         <Box
-                            width="95%"
+                            width="90%"
                             direction="column"
                             align="center"
                             justify="center"
@@ -328,6 +339,77 @@ class GameDash extends Component {
                                 }}
                             />
                             
+                        </Box>
+
+                        <Box
+                            width="100%" 
+                            height="60px" 
+                            direction="row"
+                            background={grey2}
+                            align="center"
+                            justify="between"
+                            round="10px"
+                            pad="10px"
+                        >
+                            {// controls, policy pick, vode
+                            }
+
+                            <Box
+                                height="100%" 
+                                direction="row"
+                                gap="small"
+                                align="center"
+                                justify="start"
+                            >
+                                {this.state.host && 
+                                    <Box
+                                        direction="row"
+                                        gap="3px"
+                                        align="center"
+                                        justify="start"
+                                        onClick={()=>this.resetGame()}
+                                        pad="10px"   
+                                        background={offWhite}
+                                        round="20px"                                     
+                                    >
+                                        <GrPowerCycle color={grey2} />
+                                        <Text color={grey}>RESET</Text>
+                                    </Box>
+                                }
+                                <Box
+                                    direction="row"
+                                    gap="3px"
+                                    align="center"
+                                    justify="start"
+                                    onClick={()=>this.leaveGame()}
+                                    pad="10px"   
+                                    background={offWhite}
+                                    round="20px"                                     
+                                >
+                                    <GrPowerCycle color={grey2} />
+                                    <Text color={grey}>LEAVE GAME</Text>
+                                </Box>   
+                            </Box>
+                            <Box
+                                height="100%" 
+                                direction="row"
+                                gap="small"
+                                align="center"
+                                justify="start"
+                            >
+                                
+                            </Box>
+
+                            <Box
+                                height="100%" 
+                                direction="row"
+                                gap="small"
+                                align="center"
+                                justify="start"
+                            >
+                                
+                            </Box>
+
                         </Box>
                         
                     </Box>
