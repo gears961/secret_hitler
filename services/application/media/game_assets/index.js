@@ -8,3 +8,5 @@ export {default as PolicyLiberal} from './policy_lib.png';
 export {default as RoleFascist} from './role_fas.png';
 export {default as RoleHitler} from './role_hitler.png';
 export {default as RoleLiberal} from './role_lib.png';
+export {default as BoardLiberal} from './board_lib.png';
+export {default as BoardFascist} from './board_fas.png';

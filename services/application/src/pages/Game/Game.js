@@ -14,7 +14,7 @@ import { deepMerge } from 'grommet/utils';
 
 import { Login} from "grommet-icons";
 
-import {Lobby, GameBoard} from 'Components';
+import {Lobby, GameDash} from 'Components';
 
 const customFocus = deepMerge(grommet, {
     global: {
@@ -103,7 +103,7 @@ class Game extends Component {
                     {!this.state.gameInProgress ? 
                         <Lobby data={{players:this.state.players}} />
                     :
-                        <GameBoard data={{players:this.state.players, code:this.state.code}} />
+                        <GameDash data={{players:this.state.players, code:this.state.code}} />
                     }
                 </Box>
             </Grommet>
