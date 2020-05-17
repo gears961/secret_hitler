@@ -140,15 +140,15 @@ class GameCard extends Component {
                         backgroundSize: 'cover',
                         backgroundRepeat: 'no-repeat'
                     }}
+                    
                 >
                     {this.state.policy && 
                         <Image 
                             src={policyImage} 
-                            width="88%" 
+                            width="80%"
                             margin={{"top":(-2.1 * this.state.reveal * width) + "px"}}
-                            style={{
-                                "boxShadow": "1px 1px 0px #999,2px 2px 0px #999,3px 3px 0px #999,4px 4px 0px #999,5px 5px 0px #999,6px 6px 0px #999;"
-                            }}
+                            className={"tile-effect-"  + (this.props.data.fascist ? "fas" : "lib")}
+                            style={{"borderRadius": "10px"}}
                         />
                     }
                 </Box>

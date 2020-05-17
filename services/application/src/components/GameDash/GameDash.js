@@ -192,6 +192,10 @@ class GameDash extends Component {
                                 }}
                             />
                         </Box>
+                        <Box>
+                            {// LOBBY INFORMATION
+                            }
+                        </Box>
                         
                     </Box>
                     <Box
