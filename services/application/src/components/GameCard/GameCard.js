@@ -18,7 +18,6 @@ import { StatusInfoSmall } from "grommet-icons";
 import { deepMerge } from 'grommet/utils';
 import ReactTooltip from "react-tooltip";
 
-
 import {
     Envelope,
     VoteJa,

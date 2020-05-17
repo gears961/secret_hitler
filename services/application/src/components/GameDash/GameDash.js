@@ -15,6 +15,12 @@ import {
 } from 'grommet';
 
 import { StatusInfoSmall } from "grommet-icons";
+
+import { AiFillEye } from "react-icons/ai";
+import { FaHandPaper, FaSkull } from "react-icons/fa";
+import { BsXCircleFill, BsCircle } from "react-icons/bs";
+import { GiCardDraw, GiCardDiscard, GiEagleEmblem } from "react-icons/gi";
+
 import { deepMerge } from 'grommet/utils';
 import ReactTooltip from "react-tooltip";
 
@@ -54,7 +60,13 @@ class GameDash extends Component {
             role:null, 
             member:null, 
             fascist:false,
-            hitler:false
+            hitler:false,
+            intel: '',
+            drawPile: 0,
+            discardPile: 0,
+            electionTracker: 0,
+            numberOfFascists:0,
+            numberOfLiberals:0
         };
         
     }
@@ -88,21 +100,46 @@ class GameDash extends Component {
         this._isMounted = true;
         if (this._isMounted) {
             this.setState(this.props.data);
-            
-            // test Data
-            this.setState({
+
+            var playerNum = this.props.data.players.length;
+
+            var testData = {
                 role:RoleHitler, 
                 member:MemberFascist, 
                 fascist:true,
-                hitler:true
-            });
+                hitler:false,
+                intel:'',
+                drawPile: 8,
+                discardPile: 3,
+                electionTracker: 2,
+                numberOfFascists: playerNum >= 9 ? 4 : playerNum >= 7 ? 3 : 2,
+                numberOfLiberals: playerNum >= 9 ? playerNum - 4 : playerNum >= 7 ? playerNum - 3 : playerNum - 2
+            }
+
+            if (testData.fascist) {
+                if (testData.hitler) {
+                    testData.intel = playerNum >= 9 ? "YOU HAVE 3 ALLY FASCISTS." : 
+                    playerNum >= 7 ? "YOU HAVE 2 ALLY FASCISTS." : "YOU HAVE 1 ALLY FASCIST <NAME>."; 
+                }
+                else {
+                    testData.intel = playerNum >= 9 ? "YOU HAVE 3 ALLY FASCISTS. <NAME 1>, <NAME 2> and <NAME 3>, <NAME #> IS HITLER." : 
+                    playerNum >= 7 ? "YOU HAVE 3 ALLY FASCISTS. <NAME 1> and <NAME 2>, <NAME #> IS HITLER." : "YOU HAVE 1 ALLY FASCIST <NAME>. <NAME> IS HITLER."; 
+                }
+            }
+            else {
+                testData.intel = playerNum >= 9 ? "YOU HAVE NO ALLIES. THERE ARE 4 FASCISTS." : 
+                playerNum >= 7 ? "YOU HAVE NO ALLIES. THERE ARE 3 FASCISTS." : "YOU HAVE NO ALLIES. THERE ARE 2 FASCISTS.";
+            }
+            
+            // test Data
+            this.setState(testData);
         }
     }
 
     render() {
 
         const grey = "#474442";
-        const grey2 = "#a89e9b";
+        const grey2 = "#79706d";
         const yellow = "#fbb867";
         const brightYellow = "#fdde4e";
         const orange = "#f2664a";
@@ -155,52 +192,135 @@ class GameDash extends Component {
                                 }}
                             />
                         </Box>
-                        <Box height="28%" width="100%" background={offWhite} pad="small" round="xsmall">
-                            Other INFO
-
-                            Other fascists
-                        </Box>
+                        
                     </Box>
                     <Box
                         width="64%"
                         height="100%"
                         direction="column"
                         align="center"
-                        justify="between"
+                        justify="start"
                         background={grey}
                         round="xsmall"
                         pad="medium"
-                        gap="small"
+                        gap="large"
                     >
                         <Box 
                             width="60%" 
                             height="50px" 
-                            background={orange}
+                            direction="row"
+                            background={grey2}
+                            gap="medium"
                             align="center"
                             justify="center"
+                            round="10px"
                         >
-                            Game Info
+                            {// draw pile, number of faschists, election tracker, liberals, discard pile
+                            }
+                            <Box
+                                direction="row"
+                                gap="xsmall"
+                                align="center"
+                                justify="center"
+                                data-tip data-for="drawPile"
+                            >
+                                <GiCardDraw color={offWhite}/>
+                                <Text color={offWhite}>{this.state.drawPile}</Text>
+                                <ReactTooltip id="drawPile" type='info' backgroundColor={offWhite} textColor={grey}>
+                                    DRAW PILE
+                                </ReactTooltip>
+                            </Box>
+
+                            <Box
+                                direction="row"
+                                gap="xsmall"
+                                align="center"
+                                justify="center"
+                                data-tip data-for="numFas"
+                            >
+                                <FaSkull color={orange}/>
+                                <Text color={orange}>{this.state.numberOfFascists}</Text>
+                                <ReactTooltip id="numFas" type='info' backgroundColor={orange} >
+                                    NUMBER OF FASCISTS
+                                </ReactTooltip>
+                            </Box>
+
+                            <Box
+                                direction="row"
+                                gap="xsmall"
+                                align="center"
+                                justify="center"
+                                data-tip data-for="eTracker"
+                            >
+                                {this.state.electionTracker > 0 ? 
+                                    <BsXCircleFill color={orange}/>
+                                :
+                                    <BsCircle color={offWhite}/>
+                                }
+                                {this.state.electionTracker > 1 ? 
+                                    <BsXCircleFill color={orange}/>
+                                :
+                                    <BsCircle color={offWhite}/>
+                                }
+                                {this.state.electionTracker > 2 ? 
+                                    <BsXCircleFill color={orange}/>
+                                :
+                                    <BsCircle color={offWhite}/>
+                                }
+
+                                <ReactTooltip id="eTracker" type='info' backgroundColor={offWhite} textColor={grey}>
+                                    ELECTION TRACKER
+                                </ReactTooltip>
+                            </Box>
+
+                            <Box
+                                direction="row"
+                                gap="xsmall"
+                                align="center"
+                                justify="center"
+                                data-tip data-for="numLib"
+                            >
+                                <GiEagleEmblem color={blue}/>
+                                <Text color={blue}>{this.state.numberOfLiberals}</Text>
+                                <ReactTooltip id="numLib" type='info' backgroundColor={blue}>
+                                    NUMBER OF LIBERALS
+                                </ReactTooltip>
+                            </Box>
+
+                            <Box
+                                direction="row"
+                                gap="xsmall"
+                                align="center"
+                                justify="center"
+                                data-tip data-for="discardPile"
+                            >
+                                <GiCardDiscard color={offWhite}/>
+                                <Text color={offWhite}>{this.state.discardPile}</Text>
+                                <ReactTooltip id="discardPile" type='info' backgroundColor={offWhite} textColor={grey}>
+                                    DISCARD PILE
+                                </ReactTooltip>
+                            </Box>
                         </Box>
                         <Box
                             width="95%"
                             direction="column"
                             align="center"
                             justify="center"
-                            gap="small"
+                            gap="medium"
                             id="gameboards"
                         >
                             <GameBoard 
                                 width="95%"
                                 data={{
                                     fascist:false,
-                                    playersNum: this.props.data.players.length,
+                                    playerNum: this.props.data.players.length,
                                 }}
                             />
                             <GameBoard 
                                 width="95%"
                                 data={{
                                     fascist:true,
-                                    playersNum: this.props.data.players.length,
+                                    playerNum: this.props.data.players.length,
                                 }}
                             />
                             
@@ -216,7 +336,8 @@ class GameDash extends Component {
                         background={grey}
                         round="xsmall"
                     >
-                        INFO
+                        {// CHAT LOG AND ALLY INFORMATION
+                        }
                     </Box>
                 </Box>
 

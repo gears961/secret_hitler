@@ -23,7 +23,15 @@ import {
     BoardLiberal,
     BoardFascist,
     CardLibWin,
-    CardFasWin
+    CardFasWin,
+    CardFasR1P9,
+    CardFasR2P7,
+    CardFasR2P9,
+    CardFasR3P5,
+    CardFasR3P7,
+    CardFasR3P9,
+    CardFasR4,
+    CardFasR5
 } from 'GameAssets';
 
 import {GameCard} from 'Components';
@@ -73,13 +81,20 @@ class GameBoard extends Component {
             this.setState({width: w});
 
             var cards = [];
+            var msg = '';
 
             if (this.props.data.fascist) {
-                var icon1 = null;
-                var icon2 = null;
-                var icon3 = null;
-                var icon4 = null;
-                var icon5 = null;
+                console.log(this.props.data);
+                msg = this.props.data.playerNum >= 9 ? "9 OR 10 PLAYERS: PLAYING WITH 3 FASCISTS AND HITLER, HITLER DOESN'T KNOW WHO THE FASCISTS ARE." : 
+                this.props.data.playerNum >= 7 ? "7 OR 8 PLAYERS: PLAYING WITH 2 FASCISTS AND HITLER, HITLER DOESN'T KNOW WHO THE FASCISTS ARE." : "5 OR 6 PLAYERS: PLAYING WITH 1 FASCISTS AND HITLER, HITLER KNOWS WHO THE FASCIST IS."; 
+
+                var icon1 = this.props.data.playerNum >= 9 ? CardFasR1P9 : null;
+                var icon2 = this.props.data.playerNum >= 9 ? CardFasR2P9 : 
+                            this.props.data.playerNum >= 7 ? CardFasR2P7 : null;
+                var icon3 = this.props.data.playerNum >= 9 ? CardFasR3P9 : 
+                            this.props.data.playerNum >= 7 ? CardFasR3P7 : CardFasR3P5;
+                var icon4 = CardFasR4;
+                var icon5 = CardFasR5;
                 var icon6 = CardFasWin;
 
                 cards = [
@@ -146,7 +161,7 @@ class GameBoard extends Component {
                 ];
             }
             else {
-
+                msg="5 - 10 PLAYERS: NO SPECIAL ROLES."
                 cards = [
                     {
                         id:"lib",
@@ -200,7 +215,7 @@ class GameBoard extends Component {
                     }
                 ];
             }
-            this.setState({gameCards:cards});
+            this.setState({gameCards:cards, msg:msg});
         }
     }
 
@@ -218,7 +233,6 @@ class GameBoard extends Component {
         const width = this.state.width*0.97;
         const height = width * 0.3135;
 
-        console.log(this.state);
         return (
             <Grommet theme={customFocus}>
                 <Box 
@@ -248,7 +262,7 @@ class GameBoard extends Component {
                             <GameCard id={"card" + item.id + i} data={item} />
                         ))}
                     </Box>
-                    <Text size="small" color={this.props.data.fascist ? orange : blue} > SOME TEXT</Text>
+                    <Text size="small" color={this.props.data.fascist ? orange : blue} > {this.state.msg}</Text>
 
                 </Box>
             </Grommet>

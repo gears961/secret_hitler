@@ -32,7 +32,7 @@ class Game extends Component {
         this.state = {
             msg: '',
             gameInProgress: true,
-            players: [],
+            players: [1,2,3,4,5,6,7,8,9],
             code:''
         };
         
@@ -70,7 +70,7 @@ class Game extends Component {
 
                 // if game in progress, show error
                 // otherwise join lobby
-                
+
             }
 
         }
