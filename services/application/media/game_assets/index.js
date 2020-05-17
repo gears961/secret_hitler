@@ -10,3 +10,7 @@ export {default as RoleHitler} from './role_hitler.png';
 export {default as RoleLiberal} from './role_lib.png';
 export {default as BoardLiberal} from './board_lib.png';
 export {default as BoardFascist} from './board_fas.png';
+export {default as IconLiberal} from './icon_liberal.png';
+export {default as IconFascist} from './icon_fascist.png';
+export {default as CardLibWin} from './card_lib_win.png';
+export {default as CardFasWin} from './card_fas_win.png';

@@ -48,11 +48,15 @@ class GameCard extends Component {
         this.state = {
             msg: '',
             reveal: 0,
-            envWidth: 80,
-            role:null,
-            member: null,
-            fascist: false,
-            id: Date.now()
+            policy:true,
+            id: Date.now(),
+            width: 0,
+            fascist:false,
+            ability:null,
+            factor:0,
+            special:false, 
+            icon:null, 
+            msg:[]
         };
         
     }
@@ -70,11 +74,11 @@ class GameCard extends Component {
 
     
     reveal = (event) => {
-        if (this.state.reveal > 0) {
-            this.setState({reveal: 0});
+        if (this.state.reveal == 0) {
+            this.setState({reveal: 1});
         }
         else {
-            this.setState({reveal: this.state.envWidth});
+            this.setState({reveal: 0});
         }
     }
 
@@ -100,75 +104,54 @@ class GameCard extends Component {
         const offWhite = "#fde0bc";
         const blue = "#6d97b9";
 
-        const envWidth = this.state.envWidth * 0.98;
-        const M = {w: 1174, h:1660}
-        const R = {w: 738, h:1080}
-        const E = {w: 637, h:1080}
+        const width = (this.props.data.width * 0.134);
+        const height = 1.3576 * width;
+        
+        const fasColours = ["#e1dbd0","#db5a3e"];
+        const libColours = ["#bfe0e0","#378895"];
+        const special = !this.props.data.special ? 0 : 1;
 
-        const offsetR = ((envWidth / R.w) * R.h) - (this.state.reveal * 1.5);
-        const offsetM = ((envWidth / M.w) * M.h) - this.state.reveal;
-        const offsetE = (((envWidth / M.w) * M.h) + (envWidth * 0.15))  - (this.state.reveal * 1.5);
-
-        const role = this.props.data.role;
-        const member = this.props.data.member;
-        const memberColour = this.props.data.fascist ? orange : blue;
-        const roleText = !this.props.data.fascist ? "LIBERAL" : this.props.data.hitler ? "HITELER" : "FASCIST";
-        const memberText = !this.props.data.fascist ? "LIBERAL" : "FASCIST";
+        const backColour = this.props.data.fascist ? fasColours[special]: libColours[special]; 
+        const borderColour = this.props.data.fascist ? fasColours[1]: libColours[1];
+        
+        const policyImage = this.props.data.fascist ? PolicyFascist : PolicyLiberal;
 
         return (
             <Grommet theme={customFocus} background="none">
                 <Box
-                    width={(envWidth * 1.2) + "px"}
+                    width={width + "px"}
+                    height={height + "px"}
                     onClick={() => this.reveal()}
                     direction="column"
-                    align="start"
+                    align="center"
                     justify="center"
+                    background={backColour}
+                    round={(width * 0.06) + "px"}
+                    border={
+                        {
+                            "color": borderColour,
+                            "size": "small",
+                            "style": "dotted",
+                            "side": "all"
+                        }
+                    }
+                    style={{
+                        backgroundImage: `url(${this.props.data.icon != null ? this.props.data.icon : ""})`,
+                        backgroundPosition: 'center',
+                        backgroundSize: 'cover',
+                        backgroundRepeat: 'no-repeat'
+                    }}
                 >
-                    <Box 
-                        width={(envWidth * R.w) + "px"} 
-                        height={offsetR + "px"}
-                        pad={(envWidth * 0.02) + "px" }
-                        round={(envWidth * (1/30)) + "px" }
-                        background={offWhite}
-                        direction="row"
-                        align="center"
-                        justify="start"
-                        className="game-card-border"
-                        data-tip data-for={'role' + this.state.id}
-                    >
-                        <Image src={role} width="100%"/>
-                        <ReactTooltip id={'role' + this.state.id} type='info' backgroundColor={memberColour}>
-                            <span>{roleText}</span>
-                        </ReactTooltip>
-                    </Box>
-                    <Box 
-                        width={(envWidth * M.w) + "px"} 
-                        height={offsetR + "px"}
-                        background={offWhite}
-                        direction="row"
-                        align="center"
-                        justify="start"
-                        className="game-card"
-                        margin={{"top":(-1 * offsetM) + "px"}}
-                        data-tip data-for={'member' + this.state.id}
-                    >
-                        <Image src={member} width="100%" />
-                        <ReactTooltip id={'member' + this.state.id} type='info' backgroundColor={memberColour}>
-                            <span>{memberText}</span>
-                        </ReactTooltip>
-                    </Box>
-                    <Box 
-                        width={((this.state.envWidth * E.w) + (this.state.envWidth / 2)) + "px"} 
-                        height={offsetR + "px"}
-                        background={offWhite}
-                        direction="row"
-                        align="center"
-                        justify="center"
-                        className="game-card"
-                        margin={{"top":(-1 * offsetE) + "px"}}
-                    >
-                        <Image src={Envelope} width="100%" />
-                    </Box>
+                    {this.state.policy && 
+                        <Image 
+                            src={policyImage} 
+                            width="88%" 
+                            margin={{"top":(-2.1 * this.state.reveal * width) + "px"}}
+                            style={{
+                                "boxShadow": "1px 1px 0px #999,2px 2px 0px #999,3px 3px 0px #999,4px 4px 0px #999,5px 5px 0px #999,6px 6px 0px #999;"
+                            }}
+                        />
+                    }
                 </Box>
             </Grommet>
              

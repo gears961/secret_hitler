@@ -135,6 +135,7 @@ class GameEnvelope extends Component {
                         justify="start"
                         className="game-card-border"
                         data-tip data-for={'role' + this.state.id}
+                        border="all"
                     >
                         <Image src={role} width="100%"/>
                         <ReactTooltip id={'role' + this.state.id} type='info' backgroundColor={memberColour}>
@@ -151,6 +152,7 @@ class GameEnvelope extends Component {
                         className="game-card"
                         margin={{"top":(-1 * offsetM) + "px"}}
                         data-tip data-for={'member' + this.state.id}
+                        border="all"
                     >
                         <Image src={member} width="100%" />
                         <ReactTooltip id={'member' + this.state.id} type='info' backgroundColor={memberColour}>

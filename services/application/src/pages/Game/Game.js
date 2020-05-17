@@ -70,6 +70,7 @@ class Game extends Component {
 
                 // if game in progress, show error
                 // otherwise join lobby
+                
             }
 
         }

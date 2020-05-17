@@ -51,9 +51,10 @@ class GameDash extends Component {
             msg: '',
             reveal: 0,
             envWidth: 80,
-            role:null,
-            member: null,
-            fascist: false
+            role:null, 
+            member:null, 
+            fascist:false,
+            hitler:false
         };
         
     }
@@ -87,6 +88,14 @@ class GameDash extends Component {
         this._isMounted = true;
         if (this._isMounted) {
             this.setState(this.props.data);
+            
+            // test Data
+            this.setState({
+                role:RoleHitler, 
+                member:MemberFascist, 
+                fascist:true,
+                hitler:true
+            });
         }
     }
 
@@ -139,10 +148,10 @@ class GameDash extends Component {
                             <GameEnvelope 
                                 data={{
                                     envWidth:90, 
-                                    role:RoleHitler, 
-                                    member:MemberFascist, 
-                                    fascist:true,
-                                    hitler:true
+                                    role:this.state.role, 
+                                    member:this.state.member, 
+                                    fascist:this.state.fascist,
+                                    hitler:this.state.hitler
                                 }}
                             />
                         </Box>
@@ -157,27 +166,46 @@ class GameDash extends Component {
                         height="100%"
                         direction="column"
                         align="center"
-                        justify="center"
+                        justify="between"
                         background={grey}
                         round="xsmall"
-                        pad="small"
+                        pad="medium"
                         gap="small"
-                        id="gameboards"
                     >
-                        <GameBoard 
+                        <Box 
+                            width="60%" 
+                            height="50px" 
+                            background={orange}
+                            align="center"
+                            justify="center"
+                        >
+                            Game Info
+                        </Box>
+                        <Box
                             width="95%"
-                            data={{
-                                fascist:false,
-                                playersNum: this.props.data.players.length,
-                            }}
-                        />
-                        <GameBoard 
-                            width="95%"
-                            data={{
-                                fascist:true,
-                                playersNum: this.props.data.players.length,
-                            }}
-                        />
+                            direction="column"
+                            align="center"
+                            justify="center"
+                            gap="small"
+                            id="gameboards"
+                        >
+                            <GameBoard 
+                                width="95%"
+                                data={{
+                                    fascist:false,
+                                    playersNum: this.props.data.players.length,
+                                }}
+                            />
+                            <GameBoard 
+                                width="95%"
+                                data={{
+                                    fascist:true,
+                                    playersNum: this.props.data.players.length,
+                                }}
+                            />
+                            
+                        </Box>
+                        
                     </Box>
                     <Box
                         width="22%"
