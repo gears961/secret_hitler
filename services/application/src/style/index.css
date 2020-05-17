@@ -1,13 +1,13 @@
 body {
-  margin: 0;
-  padding: 0;
+  margin: 0 !important;
+  padding: 0 !important;
   font-family: sans-serif;
   background-color: #FBB969;
 }
 
 * {
     font-family: 'Montserrat', sans-serif !important;
-    transition-duration: 0.5s !important;
+    transition-duration: 0.25s !important;
 }
 
 .game-card {
@@ -21,4 +21,92 @@ body {
     -moz-box-shadow: 5px 5px 9px -7px rgba(0,0,0,0.29);
     box-shadow: 5px 5px 9px -7px rgba(0,0,0,0.29);
     border: 1px solid rgba(100, 100, 100, 0.24);
+}
+
+.tile-effect-fas {
+    box-shadow: 1px 1px 0px #fde0bc,
+                2px 2px 0px #fde0bc,
+                3px 3px 0px #fde0bc,
+                4px 4px 0px #fde0bc,
+                5px 5px 0px #fde0bc,
+                6px 6px 0px #f2664a;
+    -webkit-box-shadow: 1px 1px 0px #fde0bc,
+                        2px 2px 0px #fde0bc,
+                        3px 3px 0px #fde0bc,
+                        4px 4px 0px #fde0bc,
+                        5px 5px 0px #fde0bc,
+                        6px 6px 0px #f2664a;
+    -moz-box-shadow: 1px 1px 0px #fde0bc,
+                    2px 2px 0px #fde0bc,
+                    3px 3px 0px #fde0bc,
+                    4px 4px 0px #fde0bc,
+                    5px 5px 0px #fde0bc,
+                    6px 6px 0px #f2664a;
+        
+}
+
+.tile-effect {
+    box-shadow: 1px 1px 0px #fde0bc,
+                2px 2px 0px #fde0bc,
+                3px 3px 0px #fde0bc,
+                4px 4px 0px #fde0bc,
+                5px 5px 0px #fde0bc,
+                6px 6px 0px #474442;
+    -webkit-box-shadow: 1px 1px 0px #fde0bc,
+                        2px 2px 0px #fde0bc,
+                        3px 3px 0px #fde0bc,
+                        4px 4px 0px #fde0bc,
+                        5px 5px 0px #fde0bc,
+                        6px 6px 0px #474442;
+    -moz-box-shadow: 1px 1px 0px #fde0bc,
+                    2px 2px 0px #fde0bc,
+                    3px 3px 0px #fde0bc,
+                    4px 4px 0px #fde0bc,
+                    5px 5px 0px #fde0bc,
+                    6px 6px 0px #474442;
+        
+}
+
+.tile-effect-rev {
+    box-shadow:         -1px -1px 0px #fde0bc,
+                        -2px -2px 0px #fde0bc,
+                        -3px -3px 0px #fde0bc,
+                        -4px -4px 0px #fde0bc,
+                        -5px -5px 0px #fde0bc,
+                        -6px -6px 0px #474442;
+    -webkit-box-shadow: -1px -1px 0px #fde0bc,
+                        -2px -2px 0px #fde0bc,
+                        -3px -3px 0px #fde0bc,
+                        -4px -4px 0px #fde0bc,
+                        -5px -5px 0px #fde0bc,
+                        -6px -6px 0px #474442;
+    -moz-box-shadow:    -1px -1px 0px #fde0bc,
+                        -2px -2px 0px #fde0bc,
+                        -3px -3px 0px #fde0bc,
+                        -4px -4px 0px #fde0bc,
+                        -5px -5px 0px #fde0bc,
+                        -6px -6px 0px #474442;
+        
+}
+
+.tile-effect-lib {
+    box-shadow: 1px 1px 0px #fde0bc,
+                2px 2px 0px #fde0bc,
+                3px 3px 0px #fde0bc,
+                4px 4px 0px #fde0bc,
+                5px 5px 0px #fde0bc,
+                6px 6px 0px #6d97b9;
+    -webkit-box-shadow: 1px 1px 0px #fde0bc,
+                        2px 2px 0px #fde0bc,
+                        3px 3px 0px #fde0bc,
+                        4px 4px 0px #fde0bc,
+                        5px 5px 0px #fde0bc,
+                        6px 6px 0px #6d97b9;
+    -moz-box-shadow: 1px 1px 0px #fde0bc,
+                    2px 2px 0px #fde0bc,
+                    3px 3px 0px #fde0bc,
+                    4px 4px 0px #fde0bc,
+                    5px 5px 0px #fde0bc,
+                    6px 6px 0px #6d97b9;
+        
 }
